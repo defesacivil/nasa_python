@@ -1,0 +1,2262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_2a6275080757d29edcfb831336f71aa0 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+    <div style="position: fixed; 
+                top: 10px; right: 10px; width: 280px; height: 320px; 
+                background-color: white; border:2px solid grey; z-index:9999; 
+                font-size:12px; padding: 15px; border-radius: 5px;">
+    
+    <h4 style="margin-top:0; color:#333;"><b>LHASA MG - Mapa de Bolhas</b></h4>
+    
+    <div style="margin-bottom: 15px;">
+        <h5 style="margin-bottom: 5px; color:#555;">Tamanho das Bolhas:</h5>
+        <p style="margin: 2px 0;"><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#ccc; margin-right:5px;"></span> Pequena: Baixa importância</p>
+        <p style="margin: 2px 0;"><span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:#ccc; margin-right:5px;"></span> Média: Importância moderada</p>
+        <p style="margin: 2px 0;"><span style="display:inline-block; width:16px; height:16px; border-radius:50%; background:#ccc; margin-right:5px;"></span> Grande: Alta importância</p>
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <h5 style="margin-bottom: 5px; color:#555;">Cores (Índice de Risco):</h5>
+        <p style="margin: 2px 0;"><span style="color:green;">●</span> Verde: Risco Baixo (0-30)</p>
+        <p style="margin: 2px 0;"><span style="color:#ffdd00;">●</span> Amarelo: Risco Moderado (30-50)</p>
+        <p style="margin: 2px 0;"><span style="color:orange;">●</span> Laranja: Risco Alto (50-70)</p>
+        <p style="margin: 2px 0;"><span style="color:red;">●</span> Vermelho: Risco Crítico (70-100)</p>
+    </div>
+    
+    <div style="border-top: 1px solid #ccc; padding-top: 10px;">
+        <p style="font-size:10px; color:#666; margin:0;">
+            <b>Importância:</b> Altitude + Tipo + Localização<br>
+            <b>Risco:</b> Proximidade áreas de deslizamento
+        </p>
+    </div>
+    
+    </div>
+    
+    
+            <div class="folium-map" id="map_2a6275080757d29edcfb831336f71aa0" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_2a6275080757d29edcfb831336f71aa0 = L.map(
+                "map_2a6275080757d29edcfb831336f71aa0",
+                {
+                    center: [-18.5122, -44.555],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 7,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+            L.control.scale().addTo(map_2a6275080757d29edcfb831336f71aa0);
+
+            
+
+        
+    
+            var tile_layer_b891b8707f6bde52f1952ddeb682b6cb = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_b891b8707f6bde52f1952ddeb682b6cb.addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+            var tile_layer_a1cee64bc279cda982acc0208bb08ecf = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_a1cee64bc279cda982acc0208bb08ecf.addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+            var tile_layer_f473086026cfba8732facf4319825b0e = L.tileLayer(
+                "https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Map tiles by \u003ca href=\"http://stamen.com\"\u003eStamen Design\u003c/a\u003e, \u003ca href=\"http://creativecommons.org/licenses/by/3.0\"\u003eCC BY 3.0\u003c/a\u003e \u0026mdash; Map data \u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_f473086026cfba8732facf4319825b0e.addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+            var tile_layer_69f0f31c82f887503886a1d38af00376 = L.tileLayer(
+                "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "Map tiles by \u003ca href=\"http://stamen.com\"\u003eStamen Design\u003c/a\u003e, \u003ca href=\"http://creativecommons.org/licenses/by/3.0\"\u003eCC BY 3.0\u003c/a\u003e \u0026mdash; Map data \u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_69f0f31c82f887503886a1d38af00376.addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+            var circle_cf4405955c1f9f6baefb146c0c3696a3 = L.circle(
+                [-15.75166666, -41.45777777],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_4f4c84374b5e6f2d293d2177aa575893 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_09eb6848a9855f343638d4bbcda0fe5b = $(`<div id="html_09eb6848a9855f343638d4bbcda0fe5b" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>AGUAS VERMELHAS</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A549</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>754m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-15.752, -41.458</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_4f4c84374b5e6f2d293d2177aa575893.setContent(html_09eb6848a9855f343638d4bbcda0fe5b);
+            
+        
+
+        circle_cf4405955c1f9f6baefb146c0c3696a3.bindPopup(popup_4f4c84374b5e6f2d293d2177aa575893)
+        ;
+
+        
+    
+    
+            circle_cf4405955c1f9f6baefb146c0c3696a3.bindTooltip(
+                `<div>
+                     A549: AGUAS VERMELHAS (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_df2472985d6055ecc86d63d37a776f6a = L.circle(
+                [-16.16666666, -40.68777777],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_d9e7cb8de4c33b9e9f7f08a25a196628 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0108663a564c0cc257989c06b305a34e = $(`<div id="html_0108663a564c0cc257989c06b305a34e" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>ALMENARA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A508</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>189m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-16.167, -40.688</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_d9e7cb8de4c33b9e9f7f08a25a196628.setContent(html_0108663a564c0cc257989c06b305a34e);
+            
+        
+
+        circle_df2472985d6055ecc86d63d37a776f6a.bindPopup(popup_d9e7cb8de4c33b9e9f7f08a25a196628)
+        ;
+
+        
+    
+    
+            circle_df2472985d6055ecc86d63d37a776f6a.bindTooltip(
+                `<div>
+                     A508: ALMENARA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_70c8e2742b961a08679202f82bb478e5 = L.circle(
+                [-16.84888888, -42.03527777],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_8b6443f05610910a342870f95f64a838 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_9bcb20b4f158031d799f97e5da895622 = $(`<div id="html_9bcb20b4f158031d799f97e5da895622" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>ARACUAI</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A566</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>308m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-16.849, -42.035</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_8b6443f05610910a342870f95f64a838.setContent(html_9bcb20b4f158031d799f97e5da895622);
+            
+        
+
+        circle_70c8e2742b961a08679202f82bb478e5.bindPopup(popup_8b6443f05610910a342870f95f64a838)
+        ;
+
+        
+    
+    
+            circle_70c8e2742b961a08679202f82bb478e5.bindTooltip(
+                `<div>
+                     A566: ARACUAI (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_8057a985e1443768b7470d0aa78d044f = L.circle(
+                [-19.60583333, -46.94972221],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 13000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_b0187da62aeea9083afe8854842591b9 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_b2f25ae56895f0fb9ac5724c37936bfe = $(`<div id="html_b2f25ae56895f0fb9ac5724c37936bfe" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>ARAXA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A505</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>1018m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.606, -46.950</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>45/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_b0187da62aeea9083afe8854842591b9.setContent(html_b2f25ae56895f0fb9ac5724c37936bfe);
+            
+        
+
+        circle_8057a985e1443768b7470d0aa78d044f.bindPopup(popup_b0187da62aeea9083afe8854842591b9)
+        ;
+
+        
+    
+    
+            circle_8057a985e1443768b7470d0aa78d044f.bindTooltip(
+                `<div>
+                     A505: ARAXA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_741fbf2aa4af4591fc1168a6e3854b3f = L.circle(
+                [-20.0311111, -46.00888888],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_fa7ffd6659e8c5d4cdbfab7eeb650390 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_a5e1f26afac7f444afdd9e34783f3fe8 = $(`<div id="html_a5e1f26afac7f444afdd9e34783f3fe8" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>BAMBUI</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A565</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>697m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-20.031, -46.009</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_fa7ffd6659e8c5d4cdbfab7eeb650390.setContent(html_a5e1f26afac7f444afdd9e34783f3fe8);
+            
+        
+
+        circle_741fbf2aa4af4591fc1168a6e3854b3f.bindPopup(popup_fa7ffd6659e8c5d4cdbfab7eeb650390)
+        ;
+
+        
+    
+    
+            circle_741fbf2aa4af4591fc1168a6e3854b3f.bindTooltip(
+                `<div>
+                     A565: BAMBUI (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_4b10a2a83f5021dd9fa59f9c58422783 = L.circle(
+                [-21.22833332, -43.76777777],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff8800", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 13000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_3d737e5aeed3f57a5d4079f9b437fa6b = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_fc39f62f026a63db44ac6ada875e6ae5 = $(`<div id="html_fc39f62f026a63db44ac6ada875e6ae5" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>BARBACENA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A502</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>1169m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-21.228, -43.768</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>50/100</td></tr>                 <tr><td><b>Importância:</b></td><td>45/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_3d737e5aeed3f57a5d4079f9b437fa6b.setContent(html_fc39f62f026a63db44ac6ada875e6ae5);
+            
+        
+
+        circle_4b10a2a83f5021dd9fa59f9c58422783.bindPopup(popup_3d737e5aeed3f57a5d4079f9b437fa6b)
+        ;
+
+        
+    
+    
+            circle_4b10a2a83f5021dd9fa59f9c58422783.bindTooltip(
+                `<div>
+                     A502: BARBACENA (Risco: 50)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_2a22cce6d7152f1253e9f558aeff6a9a = L.circle(
+                [-19.97999999, -43.95861111],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff8800", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 25000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_389f664f3a7eaf60820d32cdc206e676 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_bb3dff9e281a799bd611aeb4066896f9 = $(`<div id="html_bb3dff9e281a799bd611aeb4066896f9" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>BELO HORIZONTE - CERCADINHO</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>F501</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>1200m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.980, -43.959</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>60/100</td></tr>                 <tr><td><b>Importância:</b></td><td>75/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>90/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_389f664f3a7eaf60820d32cdc206e676.setContent(html_bb3dff9e281a799bd611aeb4066896f9);
+            
+        
+
+        circle_2a22cce6d7152f1253e9f558aeff6a9a.bindPopup(popup_389f664f3a7eaf60820d32cdc206e676)
+        ;
+
+        
+    
+    
+            circle_2a22cce6d7152f1253e9f558aeff6a9a.bindTooltip(
+                `<div>
+                     F501: BELO HORIZONTE - CERCADINHO (Risco: 60)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_2fb8f78f89e1e653ce6a38b22c187f64 = L.circle(
+                [-19.88388888, -43.96944443],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff8800", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 17000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_dc603bbc7d302b25de6eac36e9e07fbe = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_5af66f9bf3d90001e4dc7cd01170e643 = $(`<div id="html_5af66f9bf3d90001e4dc7cd01170e643" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>BELO HORIZONTE - PAMPULHA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A521</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>854m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.884, -43.969</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>60/100</td></tr>                 <tr><td><b>Importância:</b></td><td>55/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>90/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_dc603bbc7d302b25de6eac36e9e07fbe.setContent(html_5af66f9bf3d90001e4dc7cd01170e643);
+            
+        
+
+        circle_2fb8f78f89e1e653ce6a38b22c187f64.bindPopup(popup_dc603bbc7d302b25de6eac36e9e07fbe)
+        ;
+
+        
+    
+    
+            circle_2fb8f78f89e1e653ce6a38b22c187f64.bindTooltip(
+                `<div>
+                     A521: BELO HORIZONTE - PAMPULHA (Risco: 60)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_5c09b5e410dd27991fddd6334190a3f3 = L.circle(
+                [-19.93388888, -43.95222222],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff8800", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 17000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_bf22bfa3ac87d145e7278ae31bca2e14 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_4766c2a7a852ef49f30a18a29c88da6e = $(`<div id="html_4766c2a7a852ef49f30a18a29c88da6e" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>BELO HORIZONTE - SANTO AGOSTINHO</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A572</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>915m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.934, -43.952</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>60/100</td></tr>                 <tr><td><b>Importância:</b></td><td>55/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>90/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_bf22bfa3ac87d145e7278ae31bca2e14.setContent(html_4766c2a7a852ef49f30a18a29c88da6e);
+            
+        
+
+        circle_5c09b5e410dd27991fddd6334190a3f3.bindPopup(popup_bf22bfa3ac87d145e7278ae31bca2e14)
+        ;
+
+        
+    
+    
+            circle_5c09b5e410dd27991fddd6334190a3f3.bindTooltip(
+                `<div>
+                     A572: BELO HORIZONTE - SANTO AGOSTINHO (Risco: 60)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_6bcd4ec404b95676ea719fb10ebd1e21 = L.circle(
+                [-15.52416666, -46.43555555],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_044bbcd87e613f817a4fde149e30f6e5 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_03e88bf63ceefb133b6b6ea328d70e64 = $(`<div id="html_03e88bf63ceefb133b6b6ea328d70e64" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>BURITIS</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A544</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>894m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-15.524, -46.436</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_044bbcd87e613f817a4fde149e30f6e5.setContent(html_03e88bf63ceefb133b6b6ea328d70e64);
+            
+        
+
+        circle_6bcd4ec404b95676ea719fb10ebd1e21.bindPopup(popup_044bbcd87e613f817a4fde149e30f6e5)
+        ;
+
+        
+    
+    
+            circle_6bcd4ec404b95676ea719fb10ebd1e21.bindTooltip(
+                `<div>
+                     A544: BURITIS (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_ccfece01b3b844d625e14bf0b88161de = L.circle(
+                [-19.53916666, -49.51805554],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_cd0cc348c4eda13d36e1bf7e335fe8d4 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_1a98ad5946757c21b121eae82fcefcbd = $(`<div id="html_1a98ad5946757c21b121eae82fcefcbd" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>CAMPINA VERDE</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A519</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>559m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.539, -49.518</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_cd0cc348c4eda13d36e1bf7e335fe8d4.setContent(html_1a98ad5946757c21b121eae82fcefcbd);
+            
+        
+
+        circle_ccfece01b3b844d625e14bf0b88161de.bindPopup(popup_cd0cc348c4eda13d36e1bf7e335fe8d4)
+        ;
+
+        
+    
+    
+            circle_ccfece01b3b844d625e14bf0b88161de.bindTooltip(
+                `<div>
+                     A519: CAMPINA VERDE (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_a4751714f7086617a08b6de6ada9d718 = L.circle(
+                [-17.70555555, -42.38916666],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_7bea4e5442ba279ae1628e182e222a3c = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_9b6b24e71a37bc584f465bb85b47c732 = $(`<div id="html_9b6b24e71a37bc584f465bb85b47c732" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>CAPELINHA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A541</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>932m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-17.706, -42.389</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_7bea4e5442ba279ae1628e182e222a3c.setContent(html_9b6b24e71a37bc584f465bb85b47c732);
+            
+        
+
+        circle_a4751714f7086617a08b6de6ada9d718.bindPopup(popup_7bea4e5442ba279ae1628e182e222a3c)
+        ;
+
+        
+    
+    
+            circle_a4751714f7086617a08b6de6ada9d718.bindTooltip(
+                `<div>
+                     A541: CAPELINHA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_02414003ad45e0573e5f178f3eeab1b1 = L.circle(
+                [-19.73583333, -42.13722221],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_ba5b335fb3285d8f5d9af7e0892fd05d = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_adb1de74a102c946ba43b47d079967c9 = $(`<div id="html_adb1de74a102c946ba43b47d079967c9" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>CARATINGA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A554</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>609m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.736, -42.137</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_ba5b335fb3285d8f5d9af7e0892fd05d.setContent(html_adb1de74a102c946ba43b47d079967c9);
+            
+        
+
+        circle_02414003ad45e0573e5f178f3eeab1b1.bindPopup(popup_ba5b335fb3285d8f5d9af7e0892fd05d)
+        ;
+
+        
+    
+    
+            circle_02414003ad45e0573e5f178f3eeab1b1.bindTooltip(
+                `<div>
+                     A554: CARATINGA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_f1d5508a4080a76c5b847d5fb8c3062b = L.circle(
+                [-19.98583333, -48.15166666],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_7933d08d0e12190ecce616721f20caa6 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_8ec953df2c9466bce9dd1034fac2b04d = $(`<div id="html_8ec953df2c9466bce9dd1034fac2b04d" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>CONCEICAO DAS ALAGOAS</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A520</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>573m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.986, -48.152</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_7933d08d0e12190ecce616721f20caa6.setContent(html_8ec953df2c9466bce9dd1034fac2b04d);
+            
+        
+
+        circle_f1d5508a4080a76c5b847d5fb8c3062b.bindPopup(popup_7933d08d0e12190ecce616721f20caa6)
+        ;
+
+        
+    
+    
+            circle_f1d5508a4080a76c5b847d5fb8c3062b.bindTooltip(
+                `<div>
+                     A520: CONCEICAO DAS ALAGOAS (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_168e77bdace7f2d954e4f77564dfc9ae = L.circle(
+                [-21.54666666, -43.26111111],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_5b4ae4f0cd9bf21e190e69cd70685d21 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_7f056c9309d5def36630738571cc0f81 = $(`<div id="html_7f056c9309d5def36630738571cc0f81" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>CORONEL PACHECO</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A557</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>411m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-21.547, -43.261</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_5b4ae4f0cd9bf21e190e69cd70685d21.setContent(html_7f056c9309d5def36630738571cc0f81);
+            
+        
+
+        circle_168e77bdace7f2d954e4f77564dfc9ae.bindPopup(popup_5b4ae4f0cd9bf21e190e69cd70685d21)
+        ;
+
+        
+    
+    
+            circle_168e77bdace7f2d954e4f77564dfc9ae.bindTooltip(
+                `<div>
+                     A557: CORONEL PACHECO (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_a884d0c0681459c2e812898a759941cd = L.circle(
+                [-18.74777777, -44.45388888],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_ceb8b9bf19a677c912d70d6e0985d5e4 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_b98e939fb6c936f0c04482520148a510 = $(`<div id="html_b98e939fb6c936f0c04482520148a510" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>CURVELO</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A538</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>669m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-18.748, -44.454</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_ceb8b9bf19a677c912d70d6e0985d5e4.setContent(html_b98e939fb6c936f0c04482520148a510);
+            
+        
+
+        circle_a884d0c0681459c2e812898a759941cd.bindPopup(popup_ceb8b9bf19a677c912d70d6e0985d5e4)
+        ;
+
+        
+    
+    
+            circle_a884d0c0681459c2e812898a759941cd.bindTooltip(
+                `<div>
+                     A538: CURVELO (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_57897ee57eebe63d22163d05c8539e8a = L.circle(
+                [-18.231052, -43.648269],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 13000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_c69ea984940a080842abf52824c25c8a = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_31c4e1458ee550514878e16d701894f6 = $(`<div id="html_31c4e1458ee550514878e16d701894f6" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>DIAMANTINA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A537</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>1359m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-18.231, -43.648</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>45/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_c69ea984940a080842abf52824c25c8a.setContent(html_31c4e1458ee550514878e16d701894f6);
+            
+        
+
+        circle_57897ee57eebe63d22163d05c8539e8a.bindPopup(popup_c69ea984940a080842abf52824c25c8a)
+        ;
+
+        
+    
+    
+            circle_57897ee57eebe63d22163d05c8539e8a.bindTooltip(
+                `<div>
+                     A537: DIAMANTINA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_04a8b8dab16764773bb01e4cd2d425d5 = L.circle(
+                [-20.17333332, -44.87499999],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffdd00", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_8045cd93e9a2ff006dcb196a2644381e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_35039cea22f177c6047bca2eb3401460 = $(`<div id="html_35039cea22f177c6047bca2eb3401460" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>DIVINOPOLIS</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A564</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>796m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-20.173, -44.875</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>35/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_8045cd93e9a2ff006dcb196a2644381e.setContent(html_35039cea22f177c6047bca2eb3401460);
+            
+        
+
+        circle_04a8b8dab16764773bb01e4cd2d425d5.bindPopup(popup_8045cd93e9a2ff006dcb196a2644381e)
+        ;
+
+        
+    
+    
+            circle_04a8b8dab16764773bb01e4cd2d425d5.bindTooltip(
+                `<div>
+                     A564: DIVINOPOLIS (Risco: 35)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_c8c2220485e22762f85722423bb0cdb7 = L.circle(
+                [-19.48194443, -45.59388888],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_2c32b61c708098cc5b5c15730ce1dd6a = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_43dd90e8566b2cd34fe4591884becb3c = $(`<div id="html_43dd90e8566b2cd34fe4591884becb3c" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>DORES DO INDAIA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A536</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>721m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.482, -45.594</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_2c32b61c708098cc5b5c15730ce1dd6a.setContent(html_43dd90e8566b2cd34fe4591884becb3c);
+            
+        
+
+        circle_c8c2220485e22762f85722423bb0cdb7.bindPopup(popup_2c32b61c708098cc5b5c15730ce1dd6a)
+        ;
+
+        
+    
+    
+            circle_c8c2220485e22762f85722423bb0cdb7.bindTooltip(
+                `<div>
+                     A536: DORES DO INDAIA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_e540a454eab81f378e66f3d73c23e98a = L.circle(
+                [-14.91222222, -42.80861111],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_f552159132a46317f47e18462fece173 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_6de5e1e62e98f52f7ab50398a3961a37 = $(`<div id="html_6de5e1e62e98f52f7ab50398a3961a37" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>ESPINOSA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A543</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>565m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-14.912, -42.809</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_f552159132a46317f47e18462fece173.setContent(html_6de5e1e62e98f52f7ab50398a3961a37);
+            
+        
+
+        circle_e540a454eab81f378e66f3d73c23e98a.bindPopup(popup_f552159132a46317f47e18462fece173)
+        ;
+
+        
+    
+    
+            circle_e540a454eab81f378e66f3d73c23e98a.bindTooltip(
+                `<div>
+                     A543: ESPINOSA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_9568e5631dc22d5416c8765e27b56821 = L.circle(
+                [-19.88527777, -44.41694443],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff4444", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_c76f4a30df4bace4359fe559d2347eb7 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_1d78476b1ea327ba4f899f9b7ee12ac2 = $(`<div id="html_1d78476b1ea327ba4f899f9b7ee12ac2" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>FLORESTAL</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A535</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>754m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.885, -44.417</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>80/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_c76f4a30df4bace4359fe559d2347eb7.setContent(html_1d78476b1ea327ba4f899f9b7ee12ac2);
+            
+        
+
+        circle_9568e5631dc22d5416c8765e27b56821.bindPopup(popup_c76f4a30df4bace4359fe559d2347eb7)
+        ;
+
+        
+    
+    
+            circle_9568e5631dc22d5416c8765e27b56821.bindTooltip(
+                `<div>
+                     A535: FLORESTAL (Risco: 80)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_5152ee64f3449f6e375aa79284330f56 = L.circle(
+                [-20.455, -45.45388888],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_357c2ec0711bc15472f878e14f367213 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_1de715a61eeeb86293f054f0c28e0906 = $(`<div id="html_1de715a61eeeb86293f054f0c28e0906" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>FORMIGA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A524</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>878m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-20.455, -45.454</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_357c2ec0711bc15472f878e14f367213.setContent(html_1de715a61eeeb86293f054f0c28e0906);
+            
+        
+
+        circle_5152ee64f3449f6e375aa79284330f56.bindPopup(popup_357c2ec0711bc15472f878e14f367213)
+        ;
+
+        
+    
+    
+            circle_5152ee64f3449f6e375aa79284330f56.bindTooltip(
+                `<div>
+                     A524: FORMIGA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_2d1986f1876ea01031fd0b1468dc3751 = L.circle(
+                [-18.83027777, -41.97694443],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_33ebeba4bbecd41ff4d1db13ec1cd341 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_53a251d8682284dae7686eb750293b05 = $(`<div id="html_53a251d8682284dae7686eb750293b05" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>GOVERNADOR VALADARES</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A532</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>198m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-18.830, -41.977</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>30/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_33ebeba4bbecd41ff4d1db13ec1cd341.setContent(html_53a251d8682284dae7686eb750293b05);
+            
+        
+
+        circle_2d1986f1876ea01031fd0b1468dc3751.bindPopup(popup_33ebeba4bbecd41ff4d1db13ec1cd341)
+        ;
+
+        
+    
+    
+            circle_2d1986f1876ea01031fd0b1468dc3751.bindTooltip(
+                `<div>
+                     A532: GOVERNADOR VALADARES (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_0d1a12f855272af08b884cda1106bc14 = L.circle(
+                [-17.56138888, -47.19916666],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_7435b80636e26c87d1f6b5f950fc153e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_652b29c8a47ff94076006cb41592917b = $(`<div id="html_652b29c8a47ff94076006cb41592917b" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>GUARDA-MOR</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A546</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>997m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-17.561, -47.199</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_7435b80636e26c87d1f6b5f950fc153e.setContent(html_652b29c8a47ff94076006cb41592917b);
+            
+        
+
+        circle_0d1a12f855272af08b884cda1106bc14.bindPopup(popup_7435b80636e26c87d1f6b5f950fc153e)
+        ;
+
+        
+    
+    
+            circle_0d1a12f855272af08b884cda1106bc14.bindTooltip(
+                `<div>
+                     A546: GUARDA-MOR (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_40d50727e61797172055434064f5f5aa = L.circle(
+                [-20.03138888, -44.01111111],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff4444", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 13000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_ca3987a3210533a9908484749aaf88e4 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_e9095c95b74f8190d50816dec39881d7 = $(`<div id="html_e9095c95b74f8190d50816dec39881d7" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>IBIRITE (ROLA MOCA)</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A555</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>1199m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-20.031, -44.011</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>100/100</td></tr>                 <tr><td><b>Importância:</b></td><td>45/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_ca3987a3210533a9908484749aaf88e4.setContent(html_e9095c95b74f8190d50816dec39881d7);
+            
+        
+
+        circle_40d50727e61797172055434064f5f5aa.bindPopup(popup_ca3987a3210533a9908484749aaf88e4)
+        ;
+
+        
+    
+    
+            circle_40d50727e61797172055434064f5f5aa.bindTooltip(
+                `<div>
+                     A555: IBIRITE (ROLA MOCA) (Risco: 100)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_488c3db30b72affc017c6e4d6464e974 = L.circle(
+                [-18.95277777, -49.52499999],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_9a4cb9680f74a4c7aa2e7bd929efd5b1 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_20c4efa0da57f4810efe8680d598191a = $(`<div id="html_20c4efa0da57f4810efe8680d598191a" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>ITUIUTABA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A512</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>540m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-18.953, -49.525</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_9a4cb9680f74a4c7aa2e7bd929efd5b1.setContent(html_20c4efa0da57f4810efe8680d598191a);
+            
+        
+
+        circle_488c3db30b72affc017c6e4d6464e974.bindPopup(popup_9a4cb9680f74a4c7aa2e7bd929efd5b1)
+        ;
+
+        
+    
+    
+            circle_488c3db30b72affc017c6e4d6464e974.bindTooltip(
+                `<div>
+                     A512: ITUIUTABA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_e9688db7fc62e0a85e57b465763fc87d = L.circle(
+                [-15.44805555, -44.36638888],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_a25a4a4311d5357d052a755e60263cdf = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_7365b8582d3a3bd58547184841234c45 = $(`<div id="html_7365b8582d3a3bd58547184841234c45" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>JANUARIA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A559</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>468m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-15.448, -44.366</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_a25a4a4311d5357d052a755e60263cdf.setContent(html_7365b8582d3a3bd58547184841234c45);
+            
+        
+
+        circle_e9688db7fc62e0a85e57b465763fc87d.bindPopup(popup_a25a4a4311d5357d052a755e60263cdf)
+        ;
+
+        
+    
+    
+            circle_e9688db7fc62e0a85e57b465763fc87d.bindTooltip(
+                `<div>
+                     A559: JANUARIA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_ad56b66c07066ebb193cf2951ef18f3a = L.circle(
+                [-17.78444444, -46.11944443],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_e264b5a6ac184fae096dbe443f1a05d7 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_921e2256c0ceff7546323a684ab4f7eb = $(`<div id="html_921e2256c0ceff7546323a684ab4f7eb" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>JOAO PINHEIRO</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A553</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>877m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-17.784, -46.119</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_e264b5a6ac184fae096dbe443f1a05d7.setContent(html_921e2256c0ceff7546323a684ab4f7eb);
+            
+        
+
+        circle_ad56b66c07066ebb193cf2951ef18f3a.bindPopup(popup_e264b5a6ac184fae096dbe443f1a05d7)
+        ;
+
+        
+    
+    
+            circle_ad56b66c07066ebb193cf2951ef18f3a.bindTooltip(
+                `<div>
+                     A553: JOAO PINHEIRO (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_2ad7f50ab9f3c752803ded23437be4c8 = L.circle(
+                [-21.76999999, -43.36444444],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_83005fcba1bece35b4ff026bfe713aee = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_5de88eb0cace21011639446f92cdbe5a = $(`<div id="html_5de88eb0cace21011639446f92cdbe5a" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>JUIZ DE FORA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A518</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>937m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-21.770, -43.364</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>55/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_83005fcba1bece35b4ff026bfe713aee.setContent(html_5de88eb0cace21011639446f92cdbe5a);
+            
+        
+
+        circle_2ad7f50ab9f3c752803ded23437be4c8.bindPopup(popup_83005fcba1bece35b4ff026bfe713aee)
+        ;
+
+        
+    
+    
+            circle_2ad7f50ab9f3c752803ded23437be4c8.bindTooltip(
+                `<div>
+                     A518: JUIZ DE FORA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_f67dbeff4e09700675f3bb8df2caad56 = L.circle(
+                [-21.68083332, -45.94444444],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_04ad112458ca22355e43c5191b5f12a9 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_bbdba23fa61f0d7f0dbf959e47fcfc5d = $(`<div id="html_bbdba23fa61f0d7f0dbf959e47fcfc5d" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>MACHADO</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A567</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>969m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-21.681, -45.944</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_04ad112458ca22355e43c5191b5f12a9.setContent(html_bbdba23fa61f0d7f0dbf959e47fcfc5d);
+            
+        
+
+        circle_f67dbeff4e09700675f3bb8df2caad56.bindPopup(popup_04ad112458ca22355e43c5191b5f12a9)
+        ;
+
+        
+    
+    
+            circle_f67dbeff4e09700675f3bb8df2caad56.bindTooltip(
+                `<div>
+                     A567: MACHADO (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_1653040a8ef1e74679fd892521127c95 = L.circle(
+                [-20.26333333, -42.18277777],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_eb1bfe7daa7a5c5cfa401f484521b130 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_12d8874797f8fa0ee31954f882602212 = $(`<div id="html_12d8874797f8fa0ee31954f882602212" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>MANHUACU</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A556</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>819m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-20.263, -42.183</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_eb1bfe7daa7a5c5cfa401f484521b130.setContent(html_12d8874797f8fa0ee31954f882602212);
+            
+        
+
+        circle_1653040a8ef1e74679fd892521127c95.bindPopup(popup_eb1bfe7daa7a5c5cfa401f484521b130)
+        ;
+
+        
+    
+    
+            circle_1653040a8ef1e74679fd892521127c95.bindTooltip(
+                `<div>
+                     A556: MANHUACU (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_42c2841a389aeecdefe73809dc822991 = L.circle(
+                [-18.78055554, -40.98638888],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_7b0612bcc05c25715bedf66b6c372ea3 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_ed58e5bcd65d5c53a780555ebde13a49 = $(`<div id="html_ed58e5bcd65d5c53a780555ebde13a49" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>MANTENA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A540</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>255m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-18.781, -40.986</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_7b0612bcc05c25715bedf66b6c372ea3.setContent(html_ed58e5bcd65d5c53a780555ebde13a49);
+            
+        
+
+        circle_42c2841a389aeecdefe73809dc822991.bindPopup(popup_7b0612bcc05c25715bedf66b6c372ea3)
+        ;
+
+        
+    
+    
+            circle_42c2841a389aeecdefe73809dc822991.bindTooltip(
+                `<div>
+                     A540: MANTENA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_39ef7645fbc1078196c0e861539fe881 = L.circle(
+                [-22.31444444, -45.37305554],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 13000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_4cadc0b84d0a689f391fbb5d9ebd0e9a = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_c5c7f316e6eea985c326613f7b4d8f6f = $(`<div id="html_c5c7f316e6eea985c326613f7b4d8f6f" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>MARIA DA FE</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A531</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>1281m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-22.314, -45.373</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>45/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_4cadc0b84d0a689f391fbb5d9ebd0e9a.setContent(html_c5c7f316e6eea985c326613f7b4d8f6f);
+            
+        
+
+        circle_39ef7645fbc1078196c0e861539fe881.bindPopup(popup_4cadc0b84d0a689f391fbb5d9ebd0e9a)
+        ;
+
+        
+    
+    
+            circle_39ef7645fbc1078196c0e861539fe881.bindTooltip(
+                `<div>
+                     A531: MARIA DA FE (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_c6e4abb62ee633ec9e1621f4a76d5f11 = L.circle(
+                [-15.08583333, -44.01611111],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_2a469cafdcdaf373591b522398a053d9 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_95a1de5e215220a5eac5781d0e1ff868 = $(`<div id="html_95a1de5e215220a5eac5781d0e1ff868" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>MOCAMBINHO</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A539</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>454m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-15.086, -44.016</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_2a469cafdcdaf373591b522398a053d9.setContent(html_95a1de5e215220a5eac5781d0e1ff868);
+            
+        
+
+        circle_c6e4abb62ee633ec9e1621f4a76d5f11.bindPopup(popup_2a469cafdcdaf373591b522398a053d9)
+        ;
+
+        
+    
+    
+            circle_c6e4abb62ee633ec9e1621f4a76d5f11.bindTooltip(
+                `<div>
+                     A539: MOCAMBINHO (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_a1ea946f68bea51e3869fb237915ecd6 = L.circle(
+                [-14.40833333, -44.40416666],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_590fbf61af5f8c4b3401e9170c20a801 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_82fa23ff07e59140f0764a669637d0e1 = $(`<div id="html_82fa23ff07e59140f0764a669637d0e1" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>MONTALVANIA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A526</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>520m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-14.408, -44.404</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_590fbf61af5f8c4b3401e9170c20a801.setContent(html_82fa23ff07e59140f0764a669637d0e1);
+            
+        
+
+        circle_a1ea946f68bea51e3869fb237915ecd6.bindPopup(popup_590fbf61af5f8c4b3401e9170c20a801)
+        ;
+
+        
+    
+    
+            circle_a1ea946f68bea51e3869fb237915ecd6.bindTooltip(
+                `<div>
+                     A526: MONTALVANIA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_928d53616ba1898c3ca571b68afc0698 = L.circle(
+                [-22.86166666, -46.04333333],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffdd00", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 13000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_59f126b2016c99e681c3d27d5b5079d5 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_790a2e9f22f1a2a389b5240c9f98124b = $(`<div id="html_790a2e9f22f1a2a389b5240c9f98124b" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>MONTE VERDE</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A509</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>1545m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-22.862, -46.043</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>45/100</td></tr>                 <tr><td><b>Importância:</b></td><td>45/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_59f126b2016c99e681c3d27d5b5079d5.setContent(html_790a2e9f22f1a2a389b5240c9f98124b);
+            
+        
+
+        circle_928d53616ba1898c3ca571b68afc0698.bindPopup(popup_59f126b2016c99e681c3d27d5b5079d5)
+        ;
+
+        
+    
+    
+            circle_928d53616ba1898c3ca571b68afc0698.bindTooltip(
+                `<div>
+                     A509: MONTE VERDE (Risco: 45)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_49e6bed53bd16ec43f80be16dd3a47f7 = L.circle(
+                [-16.68638888, -43.84388888],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffdd00", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_0e7a4dbec393c19ea1f1d37a603cd2b8 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_91f85b0f05ce78c764cf0be260e773c7 = $(`<div id="html_91f85b0f05ce78c764cf0be260e773c7" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>MONTES CLAROS</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A506</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>646m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-16.686, -43.844</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>45/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>45/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_0e7a4dbec393c19ea1f1d37a603cd2b8.setContent(html_91f85b0f05ce78c764cf0be260e773c7);
+            
+        
+
+        circle_49e6bed53bd16ec43f80be16dd3a47f7.bindPopup(popup_0e7a4dbec393c19ea1f1d37a603cd2b8)
+        ;
+
+        
+    
+    
+            circle_49e6bed53bd16ec43f80be16dd3a47f7.bindTooltip(
+                `<div>
+                     A506: MONTES CLAROS (Risco: 45)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_8b459230938d5e26cd30700e13de4dea = L.circle(
+                [-21.105, -42.37583332],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_9878ba1d1f26d913bec3304682865d5d = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_09a16b538297783e81b898d2175bfc3a = $(`<div id="html_09a16b538297783e81b898d2175bfc3a" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>MURIAE</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A517</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>283m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-21.105, -42.376</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_9878ba1d1f26d913bec3304682865d5d.setContent(html_09a16b538297783e81b898d2175bfc3a);
+            
+        
+
+        circle_8b459230938d5e26cd30700e13de4dea.bindPopup(popup_9878ba1d1f26d913bec3304682865d5d)
+        ;
+
+        
+    
+    
+            circle_8b459230938d5e26cd30700e13de4dea.bindTooltip(
+                `<div>
+                     A517: MURIAE (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_56dbd7eecd799ae6fedd346f34753d70 = L.circle(
+                [-15.80277777, -43.29694444],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_a989489b3f7d5bef4b5cca5f4d48fbbe = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0de9fc240319886654110d96540fa1ed = $(`<div id="html_0de9fc240319886654110d96540fa1ed" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>NOVA PORTEIRINHA (JANAUBA)</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A563</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>532m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-15.803, -43.297</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_a989489b3f7d5bef4b5cca5f4d48fbbe.setContent(html_0de9fc240319886654110d96540fa1ed);
+            
+        
+
+        circle_56dbd7eecd799ae6fedd346f34753d70.bindPopup(popup_a989489b3f7d5bef4b5cca5f4d48fbbe)
+        ;
+
+        
+    
+    
+            circle_56dbd7eecd799ae6fedd346f34753d70.bindTooltip(
+                `<div>
+                     A563: NOVA PORTEIRINHA (JANAUBA) (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_79386df91e430282a1c3045198e9ed91 = L.circle(
+                [-20.715, -44.86444444],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 13000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_b2e2835191d41d881170c9e66b4e3977 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_1b39c6687ed5b6bec031501d4186113f = $(`<div id="html_1b39c6687ed5b6bec031501d4186113f" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>OLIVEIRA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A570</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>1025m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-20.715, -44.864</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>45/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_b2e2835191d41d881170c9e66b4e3977.setContent(html_1b39c6687ed5b6bec031501d4186113f);
+            
+        
+
+        circle_79386df91e430282a1c3045198e9ed91.bindPopup(popup_b2e2835191d41d881170c9e66b4e3977)
+        ;
+
+        
+    
+    
+            circle_79386df91e430282a1c3045198e9ed91.bindTooltip(
+                `<div>
+                     A570: OLIVEIRA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_df9bd3172651510079116bfda971b018 = L.circle(
+                [-20.55666666, -43.75611111],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff4444", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 13000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_3caa53e7c365f90a9f5bd6ae1c647873 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_f5876d7323592986ecc660dbd5003284 = $(`<div id="html_f5876d7323592986ecc660dbd5003284" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>OURO BRANCO</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A513</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>1048m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-20.557, -43.756</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>100/100</td></tr>                 <tr><td><b>Importância:</b></td><td>45/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_3caa53e7c365f90a9f5bd6ae1c647873.setContent(html_f5876d7323592986ecc660dbd5003284);
+            
+        
+
+        circle_df9bd3172651510079116bfda971b018.bindPopup(popup_3caa53e7c365f90a9f5bd6ae1c647873)
+        ;
+
+        
+    
+    
+            circle_df9bd3172651510079116bfda971b018.bindTooltip(
+                `<div>
+                     A513: OURO BRANCO (Risco: 100)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_8e60c78e750c4b8f7204cf1abde2e788 = L.circle(
+                [-17.24444444, -46.88166666],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_2e0278fe6ce5a7363ac8eefc26eda31d = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_f96d1e0a0ee02998a9ac7f49eb35fb1b = $(`<div id="html_f96d1e0a0ee02998a9ac7f49eb35fb1b" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>PARACATU</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A571</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>705m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-17.244, -46.882</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_2e0278fe6ce5a7363ac8eefc26eda31d.setContent(html_f96d1e0a0ee02998a9ac7f49eb35fb1b);
+            
+        
+
+        circle_8e60c78e750c4b8f7204cf1abde2e788.bindPopup(popup_2e0278fe6ce5a7363ac8eefc26eda31d)
+        ;
+
+        
+    
+    
+            circle_8e60c78e750c4b8f7204cf1abde2e788.bindTooltip(
+                `<div>
+                     A571: PARACATU (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_a4357580bb4cd38199f096d472171b30 = L.circle(
+                [-22.39583333, -44.96194444],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 13000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_2db5ab39333bb6806bef75c49b539575 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_5a4ab6ef02ca253bc91f618af2d071fe = $(`<div id="html_5a4ab6ef02ca253bc91f618af2d071fe" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>PASSA QUATRO</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A529</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>1017m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-22.396, -44.962</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>45/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_2db5ab39333bb6806bef75c49b539575.setContent(html_5a4ab6ef02ca253bc91f618af2d071fe);
+            
+        
+
+        circle_a4357580bb4cd38199f096d472171b30.bindPopup(popup_2db5ab39333bb6806bef75c49b539575)
+        ;
+
+        
+    
+    
+            circle_a4357580bb4cd38199f096d472171b30.bindTooltip(
+                `<div>
+                     A529: PASSA QUATRO (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_7bbf759a43528aeadd4d87e8bd8c770a = L.circle(
+                [-20.74527777, -46.63388888],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_5a54b25f42db7307f1a3a83994923a10 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_9ddc98f929d5d5c65cb21551da3477a6 = $(`<div id="html_9ddc98f929d5d5c65cb21551da3477a6" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>PASSOS</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A516</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>782m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-20.745, -46.634</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_5a54b25f42db7307f1a3a83994923a10.setContent(html_9ddc98f929d5d5c65cb21551da3477a6);
+            
+        
+
+        circle_7bbf759a43528aeadd4d87e8bd8c770a.bindPopup(popup_5a54b25f42db7307f1a3a83994923a10)
+        ;
+
+        
+    
+    
+            circle_7bbf759a43528aeadd4d87e8bd8c770a.bindTooltip(
+                `<div>
+                     A516: PASSOS (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_571ff80c1dbf7b2de8c9b8887644252f = L.circle(
+                [-18.52055554, -46.44055555],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_e6a2ba3aca6b89a0c1607e2e404cc01b = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0c711a0b0bff87b8da4c745fa13fcadc = $(`<div id="html_0c711a0b0bff87b8da4c745fa13fcadc" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>PATOS DE MINAS</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A562</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>950m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-18.521, -46.441</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_e6a2ba3aca6b89a0c1607e2e404cc01b.setContent(html_0c711a0b0bff87b8da4c745fa13fcadc);
+            
+        
+
+        circle_571ff80c1dbf7b2de8c9b8887644252f.bindPopup(popup_e6a2ba3aca6b89a0c1607e2e404cc01b)
+        ;
+
+        
+    
+    
+            circle_571ff80c1dbf7b2de8c9b8887644252f.bindTooltip(
+                `<div>
+                     A562: PATOS DE MINAS (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_c840c1d73f8d02ceea0a205c44a83ee4 = L.circle(
+                [-18.99666666, -46.98583333],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_318491362268fc1bce91d96fbd755258 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_934e0b9a04f910b23497df7c0314e20f = $(`<div id="html_934e0b9a04f910b23497df7c0314e20f" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>PATROCINIO</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A523</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>978m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-18.997, -46.986</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_318491362268fc1bce91d96fbd755258.setContent(html_934e0b9a04f910b23497df7c0314e20f);
+            
+        
+
+        circle_c840c1d73f8d02ceea0a205c44a83ee4.bindPopup(popup_318491362268fc1bce91d96fbd755258)
+        ;
+
+        
+    
+    
+            circle_c840c1d73f8d02ceea0a205c44a83ee4.bindTooltip(
+                `<div>
+                     A523: PATROCINIO (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_51907ea514bee3c92718a8c8c4b4382e = L.circle(
+                [-17.258064, -44.835556],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_efdca76ea645fd9135d859ba7b2a2dd0 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_af83a62de609d345dd686335e9edf9aa = $(`<div id="html_af83a62de609d345dd686335e9edf9aa" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>PIRAPORA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A545</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>505m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-17.258, -44.836</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_efdca76ea645fd9135d859ba7b2a2dd0.setContent(html_af83a62de609d345dd686335e9edf9aa);
+            
+        
+
+        circle_51907ea514bee3c92718a8c8c4b4382e.bindPopup(popup_efdca76ea645fd9135d859ba7b2a2dd0)
+        ;
+
+        
+    
+    
+            circle_51907ea514bee3c92718a8c8c4b4382e.bindTooltip(
+                `<div>
+                     A545: PIRAPORA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_b104f1b3c184b9065987fc4edccd14fd = L.circle(
+                [-19.23249999, -44.96416666],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_a8175409e79c2a045d7ba7216ad0e719 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_01f25ac8584d1542775926c9f74d2bc9 = $(`<div id="html_01f25ac8584d1542775926c9f74d2bc9" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>POMPEU</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A560</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>705m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.232, -44.964</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_a8175409e79c2a045d7ba7216ad0e719.setContent(html_01f25ac8584d1542775926c9f74d2bc9);
+            
+        
+
+        circle_b104f1b3c184b9065987fc4edccd14fd.bindPopup(popup_a8175409e79c2a045d7ba7216ad0e719)
+        ;
+
+        
+    
+    
+            circle_b104f1b3c184b9065987fc4edccd14fd.bindTooltip(
+                `<div>
+                     A560: POMPEU (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_a42a9a41913fee4f022a84f3256e2013 = L.circle(
+                [-15.72305554, -42.43583333],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_97eadba45eb440137d839304a769bf71 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0d9c0211f669318e07a4938c740c462d = $(`<div id="html_0d9c0211f669318e07a4938c740c462d" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>RIO PARDO DE MINAS</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A551</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>850m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-15.723, -42.436</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_97eadba45eb440137d839304a769bf71.setContent(html_0d9c0211f669318e07a4938c740c462d);
+            
+        
+
+        circle_a42a9a41913fee4f022a84f3256e2013.bindPopup(popup_97eadba45eb440137d839304a769bf71)
+        ;
+
+        
+    
+    
+            circle_a42a9a41913fee4f022a84f3256e2013.bindTooltip(
+                `<div>
+                     A551: RIO PARDO DE MINAS (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_2b929692dd60a56ad0d04d1a54dfb01f = L.circle(
+                [-19.87527777, -47.43416666],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_e4f97b3f05e2720d77069e71d4d06fb7 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_6b6cee9228febbe0fe4a21b39855d66f = $(`<div id="html_6b6cee9228febbe0fe4a21b39855d66f" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>SACRAMENTO</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A525</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>913m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.875, -47.434</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_e4f97b3f05e2720d77069e71d4d06fb7.setContent(html_6b6cee9228febbe0fe4a21b39855d66f);
+            
+        
+
+        circle_2b929692dd60a56ad0d04d1a54dfb01f.bindPopup(popup_e4f97b3f05e2720d77069e71d4d06fb7)
+        ;
+
+        
+    
+    
+            circle_2b929692dd60a56ad0d04d1a54dfb01f.bindTooltip(
+                `<div>
+                     A525: SACRAMENTO (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_f8e39d25d4f17f4b7e0500b184a0e765 = L.circle(
+                [-16.16027777, -42.31027777],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_9d8de70db2b95b6199a01815020bf653 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0184cf52f85be8c27be485d36f2c6930 = $(`<div id="html_0184cf52f85be8c27be485d36f2c6930" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>SALINAS</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A552</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>487m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-16.160, -42.310</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_9d8de70db2b95b6199a01815020bf653.setContent(html_0184cf52f85be8c27be485d36f2c6930);
+            
+        
+
+        circle_f8e39d25d4f17f4b7e0500b184a0e765.bindPopup(popup_9d8de70db2b95b6199a01815020bf653)
+        ;
+
+        
+    
+    
+            circle_f8e39d25d4f17f4b7e0500b184a0e765.bindTooltip(
+                `<div>
+                     A552: SALINAS (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_57be8fea80b81dcfa3a3b29c24c5d838 = L.circle(
+                [-21.10638888, -44.25083333],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_7d229a8727f6a0743ea6091ac15eb0dd = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_86c8157d4eed2abbd6fd414f89e57dc7 = $(`<div id="html_86c8157d4eed2abbd6fd414f89e57dc7" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>SAO JOAO DEL REI</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A514</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>930m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-21.106, -44.251</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_7d229a8727f6a0743ea6091ac15eb0dd.setContent(html_86c8157d4eed2abbd6fd414f89e57dc7);
+            
+        
+
+        circle_57be8fea80b81dcfa3a3b29c24c5d838.bindPopup(popup_7d229a8727f6a0743ea6091ac15eb0dd)
+        ;
+
+        
+    
+    
+            circle_57be8fea80b81dcfa3a3b29c24c5d838.bindTooltip(
+                `<div>
+                     A514: SAO JOAO DEL REI (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_7963487d87ffd6e7b0c14821505ce46c = L.circle(
+                [-17.79888888, -40.25],
+                {"bubblingMouseEvents": true, "color": "yellow", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffdd00", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_2fa02b4d3f661ddba4d2e3e8a16ba761 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_325fec338364f5c0144b6030e5ab3a83 = $(`<div id="html_325fec338364f5c0144b6030e5ab3a83" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>SERRA DOS AIMORES</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A522</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>212m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-17.799, -40.250</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>45/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_2fa02b4d3f661ddba4d2e3e8a16ba761.setContent(html_325fec338364f5c0144b6030e5ab3a83);
+            
+        
+
+        circle_7963487d87ffd6e7b0c14821505ce46c.bindPopup(popup_2fa02b4d3f661ddba4d2e3e8a16ba761)
+        ;
+
+        
+    
+    
+            circle_7963487d87ffd6e7b0c14821505ce46c.bindTooltip(
+                `<div>
+                     A522: SERRA DOS AIMORES (Risco: 45)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_90a22311105504b5814719997f6d8418 = L.circle(
+                [-19.45527777, -44.17333332],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff8800", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_3e09c9457f27d6b06a08c7b7c160ec84 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0e4e1db6bcfcac56477ad39762d2742e = $(`<div id="html_0e4e1db6bcfcac56477ad39762d2742e" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>SETE LAGOAS</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A569</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>719m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.455, -44.173</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>65/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_3e09c9457f27d6b06a08c7b7c160ec84.setContent(html_0e4e1db6bcfcac56477ad39762d2742e);
+            
+        
+
+        circle_90a22311105504b5814719997f6d8418.bindPopup(popup_3e09c9457f27d6b06a08c7b7c160ec84)
+        ;
+
+        
+    
+    
+            circle_90a22311105504b5814719997f6d8418.bindTooltip(
+                `<div>
+                     A569: SETE LAGOAS (Risco: 65)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_2e79517f49e5261b97bb0d56cbf29641 = L.circle(
+                [-17.89277777, -41.51555555],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_9cda5a9a4a9338b31241cdd1ee181808 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_c3cdc2f174459d9f64524027014a01aa = $(`<div id="html_c3cdc2f174459d9f64524027014a01aa" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>TEOFILO OTONI</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A527</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>467m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-17.893, -41.516</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_9cda5a9a4a9338b31241cdd1ee181808.setContent(html_c3cdc2f174459d9f64524027014a01aa);
+            
+        
+
+        circle_2e79517f49e5261b97bb0d56cbf29641.bindPopup(popup_9cda5a9a4a9338b31241cdd1ee181808)
+        ;
+
+        
+    
+    
+            circle_2e79517f49e5261b97bb0d56cbf29641.bindTooltip(
+                `<div>
+                     A527: TEOFILO OTONI (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_6699c5567fde7f3026614a2037be0157 = L.circle(
+                [-19.57388888, -42.62249999],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_11a84424ce9f3e020bccc3623ee75990 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_6df7d218dc36ab94edf3fd1d0ab755ad = $(`<div id="html_6df7d218dc36ab94edf3fd1d0ab755ad" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>TIMOTEO</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A511</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>493m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.574, -42.622</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_11a84424ce9f3e020bccc3623ee75990.setContent(html_6df7d218dc36ab94edf3fd1d0ab755ad);
+            
+        
+
+        circle_6699c5567fde7f3026614a2037be0157.bindPopup(popup_11a84424ce9f3e020bccc3623ee75990)
+        ;
+
+        
+    
+    
+            circle_6699c5567fde7f3026614a2037be0157.bindTooltip(
+                `<div>
+                     A511: TIMOTEO (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_6db9780d2ac0d5dd5f327947d1cb45e8 = L.circle(
+                [-18.20083333, -45.45972222],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_21b2be25d65e7c6b0dd733ad63e69483 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_ed2374e3682d80a716cdae9bb99d9a7d = $(`<div id="html_ed2374e3682d80a716cdae9bb99d9a7d" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>TRES MARIAS</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A528</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>931m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-18.201, -45.460</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_21b2be25d65e7c6b0dd733ad63e69483.setContent(html_ed2374e3682d80a716cdae9bb99d9a7d);
+            
+        
+
+        circle_6db9780d2ac0d5dd5f327947d1cb45e8.bindPopup(popup_21b2be25d65e7c6b0dd733ad63e69483)
+        ;
+
+        
+    
+    
+            circle_6db9780d2ac0d5dd5f327947d1cb45e8.bindTooltip(
+                `<div>
+                     A528: TRES MARIAS (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_f6e31b6840abc6922933a8c28c3651f6 = L.circle(
+                [-19.71, -47.96194444],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_4709578967d46f70fc0da50799b8fc59 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_b966d8edd693771c97899813a57ef16b = $(`<div id="html_b966d8edd693771c97899813a57ef16b" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>UBERABA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A568</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>778m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-19.710, -47.962</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>35/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_4709578967d46f70fc0da50799b8fc59.setContent(html_b966d8edd693771c97899813a57ef16b);
+            
+        
+
+        circle_f6e31b6840abc6922933a8c28c3651f6.bindPopup(popup_4709578967d46f70fc0da50799b8fc59)
+        ;
+
+        
+    
+    
+            circle_f6e31b6840abc6922933a8c28c3651f6.bindTooltip(
+                `<div>
+                     A568: UBERABA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_5dbe476e1f9e3fdd7b8cd03deffe9a9f = L.circle(
+                [-18.91694443, -48.25555555],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_2ff2289bc8025c4ee8f9fcb67c0e4d6e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_a5a3638d9483661d71966e95692dc504 = $(`<div id="html_a5a3638d9483661d71966e95692dc504" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>UBERLANDIA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A507</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>875m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-18.917, -48.256</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_2ff2289bc8025c4ee8f9fcb67c0e4d6e.setContent(html_a5a3638d9483661d71966e95692dc504);
+            
+        
+
+        circle_5dbe476e1f9e3fdd7b8cd03deffe9a9f.bindPopup(popup_2ff2289bc8025c4ee8f9fcb67c0e4d6e)
+        ;
+
+        
+    
+    
+            circle_5dbe476e1f9e3fdd7b8cd03deffe9a9f.bindTooltip(
+                `<div>
+                     A507: UBERLANDIA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_ba1dfe04e3a6ff7ad685125baf707584 = L.circle(
+                [-16.55416666, -46.88194443],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_de7725ebe54fa5b353194a54e65939aa = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_a99b0369a8a775aa79022991df794e94 = $(`<div id="html_a99b0369a8a775aa79022991df794e94" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>UNAI</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A542</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>641m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-16.554, -46.882</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_de7725ebe54fa5b353194a54e65939aa.setContent(html_a99b0369a8a775aa79022991df794e94);
+            
+        
+
+        circle_ba1dfe04e3a6ff7ad685125baf707584.bindPopup(popup_de7725ebe54fa5b353194a54e65939aa)
+        ;
+
+        
+    
+    
+            circle_ba1dfe04e3a6ff7ad685125baf707584.bindTooltip(
+                `<div>
+                     A542: UNAI (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_8e1391f00a043e77cf7ad7eb7fa2fcf8 = L.circle(
+                [-21.56638888, -45.40416666],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#44ff44", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_1710b8f4262ed2a7312667307adff0ff = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_dd41564810fd7a3afec3df040a80135f = $(`<div id="html_dd41564810fd7a3afec3df040a80135f" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>VARGINHA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A515</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>950m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-21.566, -45.404</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>20/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_1710b8f4262ed2a7312667307adff0ff.setContent(html_dd41564810fd7a3afec3df040a80135f);
+            
+        
+
+        circle_8e1391f00a043e77cf7ad7eb7fa2fcf8.bindPopup(popup_1710b8f4262ed2a7312667307adff0ff)
+        ;
+
+        
+    
+    
+            circle_8e1391f00a043e77cf7ad7eb7fa2fcf8.bindTooltip(
+                `<div>
+                     A515: VARGINHA (Risco: 20)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_76453966fe8524deded042356f35ee22 = L.circle(
+                [-20.7625, -42.86388888],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ff8800", "fillOpacity": 0.6, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 0.8, "radius": 5000.0, "stroke": true, "weight": 2}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+        
+    
+        var popup_e3201966f63c3813b173dfee1a371179 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_978d2eda43c98ef9bcceb4597fd15f9d = $(`<div id="html_978d2eda43c98ef9bcceb4597fd15f9d" style="width: 100.0%; height: 100.0%;">         <div style="width: 300px; font-family: Arial;">             <h4><b>VICOSA</b></h4>             <hr>             <table style="width:100%; font-size:12px;">                 <tr><td><b>Código:</b></td><td>A510</td></tr>                 <tr><td><b>Tipo:</b></td><td>Automatica</td></tr>                 <tr><td><b>Altitude:</b></td><td>698m</td></tr>                 <tr><td><b>Coordenadas:</b></td><td>-20.762, -42.864</td></tr>                 <tr><td><b>Índice de Risco:</b></td><td>50/100</td></tr>                 <tr><td><b>Importância:</b></td><td>25/100</td></tr>                 <tr><td><b>Densidade Pop.:</b></td><td>15/100</td></tr>             </table>             <hr>             <p style="font-size:11px; color:#666;">                 <b>Tamanho da bolha:</b> Importância regional<br>                 <b>Cor da bolha:</b> Índice de risco de deslizamento             </p>         </div>         </div>`)[0];
+                popup_e3201966f63c3813b173dfee1a371179.setContent(html_978d2eda43c98ef9bcceb4597fd15f9d);
+            
+        
+
+        circle_76453966fe8524deded042356f35ee22.bindPopup(popup_e3201966f63c3813b173dfee1a371179)
+        ;
+
+        
+    
+    
+            circle_76453966fe8524deded042356f35ee22.bindTooltip(
+                `<div>
+                     A510: VICOSA (Risco: 50)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var layer_control_4184704cd50ce86966222ea98dab59af_layers = {
+                base_layers : {
+                    "openstreetmap" : tile_layer_b891b8707f6bde52f1952ddeb682b6cb,
+                    "Claro" : tile_layer_a1cee64bc279cda982acc0208bb08ecf,
+                    "Terreno" : tile_layer_f473086026cfba8732facf4319825b0e,
+                    "Escuro" : tile_layer_69f0f31c82f887503886a1d38af00376,
+                },
+                overlays :  {
+                },
+            };
+            let layer_control_4184704cd50ce86966222ea98dab59af = L.control.layers(
+                layer_control_4184704cd50ce86966222ea98dab59af_layers.base_layers,
+                layer_control_4184704cd50ce86966222ea98dab59af_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": true,
+  "autoZIndex": true,
+}
+            ).addTo(map_2a6275080757d29edcfb831336f71aa0);
+
+        
+</script>
+</html>

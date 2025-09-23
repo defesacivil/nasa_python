@@ -1,0 +1,19 @@
+# Dependências do projeto LHASA RIO - Análise de Riscos de Deslizamento
+# Instituto Pereira Passos | Rio de Janeiro | NASA | Nowcast
+
+# Bibliotecas de sistema e utilitários
+urllib3>=1.26.0
+unidecode>=1.3.0
+
+# Processamento de dados geoespaciais
+arcpy>=3.0.0  # Biblioteca principal do ArcGIS (requer licença do ArcGIS)
+
+# Logging personalizado (módulo local)
+# logger  # Módulo local - implementar logger.py se necessário
+
+# Bibliotecas padrão do Python (já incluídas)
+# sys, os, shutil, copy, glob
+# logging
+# socket
+# json, csv
+# datetime

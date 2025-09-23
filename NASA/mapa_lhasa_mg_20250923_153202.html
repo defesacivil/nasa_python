@@ -1,0 +1,3799 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_ecd7b2c2dee3cb762d2840f9cf6ee4f7 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@main/folium/templates/leaflet_heat.min.js"></script>
+</head>
+<body>
+    
+    
+    <div style="position: fixed; 
+                top: 10px; right: 10px; width: 200px; height: 200px; 
+                background-color: white; border:2px solid grey; z-index:9999; 
+                font-size:14px; padding: 10px">
+    <h4>LHASA MG - Legenda</h4>
+    <p><i class="fa fa-cloud" style="color:blue"></i> Estação Automática</p>
+    <p><i class="fa fa-cloud" style="color:green"></i> Estação Convencional</p>
+    <p><i class="fa fa-cloud" style="color:orange"></i> Estação Pluviométrica</p>
+    <hr>
+    <p><span style="color:green">●</span> Risco Baixo</p>
+    <p><span style="color:orange">●</span> Risco Médio</p>
+    <p><span style="color:red">●</span> Risco Alto</p>
+    <p><span style="color:darkred">●</span> Risco Crítico</p>
+    </div>
+    
+    
+            <div class="folium-map" id="map_ecd7b2c2dee3cb762d2840f9cf6ee4f7" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_ecd7b2c2dee3cb762d2840f9cf6ee4f7 = L.map(
+                "map_ecd7b2c2dee3cb762d2840f9cf6ee4f7",
+                {
+                    center: [-18.5122, -44.555],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 7,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+            L.control.scale().addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+
+            
+
+        
+    
+            var tile_layer_8fa0ed3934c98240b72f603676273c63 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_8fa0ed3934c98240b72f603676273c63.addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+            var tile_layer_f6d1b73b8bf417fedcf696019cf5e352 = L.tileLayer(
+                "https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Map tiles by \u003ca href=\"http://stamen.com\"\u003eStamen Design\u003c/a\u003e, \u003ca href=\"http://creativecommons.org/licenses/by/3.0\"\u003eCC BY 3.0\u003c/a\u003e \u0026mdash; Map data \u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_f6d1b73b8bf417fedcf696019cf5e352.addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+            var tile_layer_1b7cbcbc164bf3d12ef77073d5062aa4 = L.tileLayer(
+                "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "Map tiles by \u003ca href=\"http://stamen.com\"\u003eStamen Design\u003c/a\u003e, \u003ca href=\"http://creativecommons.org/licenses/by/3.0\"\u003eCC BY 3.0\u003c/a\u003e \u0026mdash; Map data \u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_1b7cbcbc164bf3d12ef77073d5062aa4.addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+            var tile_layer_b16a747c4ffcb0a1358d33ffa5ae28eb = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_b16a747c4ffcb0a1358d33ffa5ae28eb.addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+            var marker_cluster_d6e1f54600324b6a9f2daccd3c562cda = L.markerClusterGroup(
+                {
+}
+            );
+        
+    
+            var marker_5679c478d28f44579a493bc29c3e4a52 = L.marker(
+                [-15.75166666, -41.45777777],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_74487ffcda3c62a2b07d80d1e61584b7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a48a14fa29dc7c090e33dd2930f6afb0 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_871901af08421aa9699e4b7cad085230 = $(`<div id="html_871901af08421aa9699e4b7cad085230" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>AGUAS VERMELHAS</b></h4>                 <hr>                 <p><b>Código:</b> A549</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 754.07m</p>                 <p><b>Coordenadas:</b> -15.7517, -41.4578</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_a48a14fa29dc7c090e33dd2930f6afb0.setContent(html_871901af08421aa9699e4b7cad085230);
+            
+        
+
+        marker_5679c478d28f44579a493bc29c3e4a52.bindPopup(popup_a48a14fa29dc7c090e33dd2930f6afb0)
+        ;
+
+        
+    
+    
+            marker_5679c478d28f44579a493bc29c3e4a52.bindTooltip(
+                `<div>
+                     A549: AGUAS VERMELHAS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_5679c478d28f44579a493bc29c3e4a52.setIcon(icon_74487ffcda3c62a2b07d80d1e61584b7);
+            
+    
+            var marker_0d419f1346f8a770c6c0b86c4d0add9c = L.marker(
+                [-16.16666666, -40.68777777],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_59e56106b7c587c44496a504d9f9423d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f1067b4816277571a02204cd0093c0ea = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_6b229fcff8e618fb70bc13c7272be34e = $(`<div id="html_6b229fcff8e618fb70bc13c7272be34e" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>ALMENARA</b></h4>                 <hr>                 <p><b>Código:</b> A508</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 189.11m</p>                 <p><b>Coordenadas:</b> -16.1667, -40.6878</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_f1067b4816277571a02204cd0093c0ea.setContent(html_6b229fcff8e618fb70bc13c7272be34e);
+            
+        
+
+        marker_0d419f1346f8a770c6c0b86c4d0add9c.bindPopup(popup_f1067b4816277571a02204cd0093c0ea)
+        ;
+
+        
+    
+    
+            marker_0d419f1346f8a770c6c0b86c4d0add9c.bindTooltip(
+                `<div>
+                     A508: ALMENARA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_0d419f1346f8a770c6c0b86c4d0add9c.setIcon(icon_59e56106b7c587c44496a504d9f9423d);
+            
+    
+            var marker_ff014da545c89c3ec01ffe3542789cdb = L.marker(
+                [-16.84888888, -42.03527777],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_5e8ad94f9f8491d9836039aa4ccb3044 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ee14392cbd5d3800856dc86f4d4bcc80 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_e84b249452662df17f2a3c93f56dcccb = $(`<div id="html_e84b249452662df17f2a3c93f56dcccb" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>ARACUAI</b></h4>                 <hr>                 <p><b>Código:</b> A566</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 308m</p>                 <p><b>Coordenadas:</b> -16.8489, -42.0353</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_ee14392cbd5d3800856dc86f4d4bcc80.setContent(html_e84b249452662df17f2a3c93f56dcccb);
+            
+        
+
+        marker_ff014da545c89c3ec01ffe3542789cdb.bindPopup(popup_ee14392cbd5d3800856dc86f4d4bcc80)
+        ;
+
+        
+    
+    
+            marker_ff014da545c89c3ec01ffe3542789cdb.bindTooltip(
+                `<div>
+                     A566: ARACUAI
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ff014da545c89c3ec01ffe3542789cdb.setIcon(icon_5e8ad94f9f8491d9836039aa4ccb3044);
+            
+    
+            var marker_102332e027e9fa96e928e02ef066d46d = L.marker(
+                [-19.60583333, -46.94972221],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_5e20f566d37f3a4421e57da242c65d3d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8a32ad5f5d2d8a8be2307a37875b57e1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a8670b43534fe81cda32ea1233df9580 = $(`<div id="html_a8670b43534fe81cda32ea1233df9580" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>ARAXA</b></h4>                 <hr>                 <p><b>Código:</b> A505</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 1018.32m</p>                 <p><b>Coordenadas:</b> -19.6058, -46.9497</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_8a32ad5f5d2d8a8be2307a37875b57e1.setContent(html_a8670b43534fe81cda32ea1233df9580);
+            
+        
+
+        marker_102332e027e9fa96e928e02ef066d46d.bindPopup(popup_8a32ad5f5d2d8a8be2307a37875b57e1)
+        ;
+
+        
+    
+    
+            marker_102332e027e9fa96e928e02ef066d46d.bindTooltip(
+                `<div>
+                     A505: ARAXA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_102332e027e9fa96e928e02ef066d46d.setIcon(icon_5e20f566d37f3a4421e57da242c65d3d);
+            
+    
+            var marker_6e06df3d3ac1f416800663beb143cca5 = L.marker(
+                [-20.0311111, -46.00888888],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_972ad3d0785353fc11226f7b621463d7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_274d270abf1c8f1460879af55988d582 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_538f66b16b674c673971fada32caf139 = $(`<div id="html_538f66b16b674c673971fada32caf139" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>BAMBUI</b></h4>                 <hr>                 <p><b>Código:</b> A565</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 697m</p>                 <p><b>Coordenadas:</b> -20.0311, -46.0089</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_274d270abf1c8f1460879af55988d582.setContent(html_538f66b16b674c673971fada32caf139);
+            
+        
+
+        marker_6e06df3d3ac1f416800663beb143cca5.bindPopup(popup_274d270abf1c8f1460879af55988d582)
+        ;
+
+        
+    
+    
+            marker_6e06df3d3ac1f416800663beb143cca5.bindTooltip(
+                `<div>
+                     A565: BAMBUI
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_6e06df3d3ac1f416800663beb143cca5.setIcon(icon_972ad3d0785353fc11226f7b621463d7);
+            
+    
+            var marker_ea01c0d474be6b9517ab81e70dd62dde = L.marker(
+                [-21.22833332, -43.76777777],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_bf3bea661d11410f8aaf3077c28d47e0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b8deda6ff7e14bde512b28a85454e48a = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_6eedb8befc22b096de97e48ac9ac1b2a = $(`<div id="html_6eedb8befc22b096de97e48ac9ac1b2a" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>BARBACENA</b></h4>                 <hr>                 <p><b>Código:</b> A502</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 1168.76m</p>                 <p><b>Coordenadas:</b> -21.2283, -43.7678</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_b8deda6ff7e14bde512b28a85454e48a.setContent(html_6eedb8befc22b096de97e48ac9ac1b2a);
+            
+        
+
+        marker_ea01c0d474be6b9517ab81e70dd62dde.bindPopup(popup_b8deda6ff7e14bde512b28a85454e48a)
+        ;
+
+        
+    
+    
+            marker_ea01c0d474be6b9517ab81e70dd62dde.bindTooltip(
+                `<div>
+                     A502: BARBACENA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ea01c0d474be6b9517ab81e70dd62dde.setIcon(icon_bf3bea661d11410f8aaf3077c28d47e0);
+            
+    
+            var marker_01dcbbb5da76890691dd281998b6ab2a = L.marker(
+                [-19.97999999, -43.95861111],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_80e8730364414d05c0096616929f8b66 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1df806fa985868b29b132ffed0b629c2 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_83d79a3775eb339a5ac083ca8695b3f6 = $(`<div id="html_83d79a3775eb339a5ac083ca8695b3f6" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>BELO HORIZONTE - CERCADINHO</b></h4>                 <hr>                 <p><b>Código:</b> F501</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 1199.55m</p>                 <p><b>Coordenadas:</b> -19.9800, -43.9586</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_1df806fa985868b29b132ffed0b629c2.setContent(html_83d79a3775eb339a5ac083ca8695b3f6);
+            
+        
+
+        marker_01dcbbb5da76890691dd281998b6ab2a.bindPopup(popup_1df806fa985868b29b132ffed0b629c2)
+        ;
+
+        
+    
+    
+            marker_01dcbbb5da76890691dd281998b6ab2a.bindTooltip(
+                `<div>
+                     F501: BELO HORIZONTE - CERCADINHO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_01dcbbb5da76890691dd281998b6ab2a.setIcon(icon_80e8730364414d05c0096616929f8b66);
+            
+    
+            var marker_a4ed4717638d0639619e4638642b46db = L.marker(
+                [-19.88388888, -43.96944443],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_537b5ab3332c3213cf0c4b4970546d3f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_aa75db9bf086bea4cfb9167cc822b0df = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_92f99c23639a014e8e8194bffc4ccfaa = $(`<div id="html_92f99c23639a014e8e8194bffc4ccfaa" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>BELO HORIZONTE - PAMPULHA</b></h4>                 <hr>                 <p><b>Código:</b> A521</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 854.02m</p>                 <p><b>Coordenadas:</b> -19.8839, -43.9694</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_aa75db9bf086bea4cfb9167cc822b0df.setContent(html_92f99c23639a014e8e8194bffc4ccfaa);
+            
+        
+
+        marker_a4ed4717638d0639619e4638642b46db.bindPopup(popup_aa75db9bf086bea4cfb9167cc822b0df)
+        ;
+
+        
+    
+    
+            marker_a4ed4717638d0639619e4638642b46db.bindTooltip(
+                `<div>
+                     A521: BELO HORIZONTE - PAMPULHA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a4ed4717638d0639619e4638642b46db.setIcon(icon_537b5ab3332c3213cf0c4b4970546d3f);
+            
+    
+            var marker_b6e6f125ed5c23ea83a487e48cc18ee1 = L.marker(
+                [-19.93388888, -43.95222222],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_dbc757ffe975c6e40050c5a5ffb6fc4b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_33a98b448fa97440f57887cdc93f8fce = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_8a311fbd992b4fc893887aa58247d80c = $(`<div id="html_8a311fbd992b4fc893887aa58247d80c" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>BELO HORIZONTE - SANTO AGOSTINHO</b></h4>                 <hr>                 <p><b>Código:</b> A572</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 915.47m</p>                 <p><b>Coordenadas:</b> -19.9339, -43.9522</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_33a98b448fa97440f57887cdc93f8fce.setContent(html_8a311fbd992b4fc893887aa58247d80c);
+            
+        
+
+        marker_b6e6f125ed5c23ea83a487e48cc18ee1.bindPopup(popup_33a98b448fa97440f57887cdc93f8fce)
+        ;
+
+        
+    
+    
+            marker_b6e6f125ed5c23ea83a487e48cc18ee1.bindTooltip(
+                `<div>
+                     A572: BELO HORIZONTE - SANTO AGOSTINHO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b6e6f125ed5c23ea83a487e48cc18ee1.setIcon(icon_dbc757ffe975c6e40050c5a5ffb6fc4b);
+            
+    
+            var marker_d52f50489ccac8ac022e8f6d699a0c7d = L.marker(
+                [-15.52416666, -46.43555555],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_dcef203e0d2f400c8bf92318ee49e864 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9207193e074a8a7e6bcbd9522183b1a1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_c76d64687827fb7826a3814574dc2486 = $(`<div id="html_c76d64687827fb7826a3814574dc2486" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>BURITIS</b></h4>                 <hr>                 <p><b>Código:</b> A544</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 894m</p>                 <p><b>Coordenadas:</b> -15.5242, -46.4356</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_9207193e074a8a7e6bcbd9522183b1a1.setContent(html_c76d64687827fb7826a3814574dc2486);
+            
+        
+
+        marker_d52f50489ccac8ac022e8f6d699a0c7d.bindPopup(popup_9207193e074a8a7e6bcbd9522183b1a1)
+        ;
+
+        
+    
+    
+            marker_d52f50489ccac8ac022e8f6d699a0c7d.bindTooltip(
+                `<div>
+                     A544: BURITIS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d52f50489ccac8ac022e8f6d699a0c7d.setIcon(icon_dcef203e0d2f400c8bf92318ee49e864);
+            
+    
+            var marker_25011f8f8b2c57776e4751af56fb83c8 = L.marker(
+                [-19.53916666, -49.51805554],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_655d50056f32757438cc5481499325ff = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7b58bda837d44622bcf9b0127ac91a35 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_842ed787994ff8f8b22de02e6e18118d = $(`<div id="html_842ed787994ff8f8b22de02e6e18118d" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>CAMPINA VERDE</b></h4>                 <hr>                 <p><b>Código:</b> A519</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 559.07m</p>                 <p><b>Coordenadas:</b> -19.5392, -49.5181</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_7b58bda837d44622bcf9b0127ac91a35.setContent(html_842ed787994ff8f8b22de02e6e18118d);
+            
+        
+
+        marker_25011f8f8b2c57776e4751af56fb83c8.bindPopup(popup_7b58bda837d44622bcf9b0127ac91a35)
+        ;
+
+        
+    
+    
+            marker_25011f8f8b2c57776e4751af56fb83c8.bindTooltip(
+                `<div>
+                     A519: CAMPINA VERDE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_25011f8f8b2c57776e4751af56fb83c8.setIcon(icon_655d50056f32757438cc5481499325ff);
+            
+    
+            var marker_5238eb8fbcbd9de20a1d97c8a8191b28 = L.marker(
+                [-17.70555555, -42.38916666],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_a9d26d5722af73edbed3c2cc313d60f0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b20788bd73a4554b74c19b199b7df833 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_1d825d5a6a7a1c7a125350e520a78bab = $(`<div id="html_1d825d5a6a7a1c7a125350e520a78bab" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>CAPELINHA</b></h4>                 <hr>                 <p><b>Código:</b> A541</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 932.06m</p>                 <p><b>Coordenadas:</b> -17.7056, -42.3892</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_b20788bd73a4554b74c19b199b7df833.setContent(html_1d825d5a6a7a1c7a125350e520a78bab);
+            
+        
+
+        marker_5238eb8fbcbd9de20a1d97c8a8191b28.bindPopup(popup_b20788bd73a4554b74c19b199b7df833)
+        ;
+
+        
+    
+    
+            marker_5238eb8fbcbd9de20a1d97c8a8191b28.bindTooltip(
+                `<div>
+                     A541: CAPELINHA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_5238eb8fbcbd9de20a1d97c8a8191b28.setIcon(icon_a9d26d5722af73edbed3c2cc313d60f0);
+            
+    
+            var marker_9a3ad6d22ebca6757e739afad17abf3d = L.marker(
+                [-19.73583333, -42.13722221],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_7ffa6312fcc8b5d3b0960996e63a5a0f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e4b05ace312e54cd136e918023149a39 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a145589590657cc55615af5cc3643fb6 = $(`<div id="html_a145589590657cc55615af5cc3643fb6" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>CARATINGA</b></h4>                 <hr>                 <p><b>Código:</b> A554</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 609.25m</p>                 <p><b>Coordenadas:</b> -19.7358, -42.1372</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_e4b05ace312e54cd136e918023149a39.setContent(html_a145589590657cc55615af5cc3643fb6);
+            
+        
+
+        marker_9a3ad6d22ebca6757e739afad17abf3d.bindPopup(popup_e4b05ace312e54cd136e918023149a39)
+        ;
+
+        
+    
+    
+            marker_9a3ad6d22ebca6757e739afad17abf3d.bindTooltip(
+                `<div>
+                     A554: CARATINGA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_9a3ad6d22ebca6757e739afad17abf3d.setIcon(icon_7ffa6312fcc8b5d3b0960996e63a5a0f);
+            
+    
+            var marker_a4dd10d707062100e17aa8667fde1aa5 = L.marker(
+                [-19.98583333, -48.15166666],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_abe311e79d61ba0a8d022622b471a09a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_11a878c1aeed41b592d0539775fda09c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_edb599369782d6de96be1abf84b13136 = $(`<div id="html_edb599369782d6de96be1abf84b13136" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>CONCEICAO DAS ALAGOAS</b></h4>                 <hr>                 <p><b>Código:</b> A520</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 572.54m</p>                 <p><b>Coordenadas:</b> -19.9858, -48.1517</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_11a878c1aeed41b592d0539775fda09c.setContent(html_edb599369782d6de96be1abf84b13136);
+            
+        
+
+        marker_a4dd10d707062100e17aa8667fde1aa5.bindPopup(popup_11a878c1aeed41b592d0539775fda09c)
+        ;
+
+        
+    
+    
+            marker_a4dd10d707062100e17aa8667fde1aa5.bindTooltip(
+                `<div>
+                     A520: CONCEICAO DAS ALAGOAS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a4dd10d707062100e17aa8667fde1aa5.setIcon(icon_abe311e79d61ba0a8d022622b471a09a);
+            
+    
+            var marker_3340b13bda3d2875c79509efd01d228d = L.marker(
+                [-21.54666666, -43.26111111],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_8ee0a5d97c8ee369352e0082ef9c3105 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e069ea371f6039d60449a1ea11fc1e22 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a428841d51b70a33dbcbc8bdf1994124 = $(`<div id="html_a428841d51b70a33dbcbc8bdf1994124" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>CORONEL PACHECO</b></h4>                 <hr>                 <p><b>Código:</b> A557</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 411.14m</p>                 <p><b>Coordenadas:</b> -21.5467, -43.2611</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_e069ea371f6039d60449a1ea11fc1e22.setContent(html_a428841d51b70a33dbcbc8bdf1994124);
+            
+        
+
+        marker_3340b13bda3d2875c79509efd01d228d.bindPopup(popup_e069ea371f6039d60449a1ea11fc1e22)
+        ;
+
+        
+    
+    
+            marker_3340b13bda3d2875c79509efd01d228d.bindTooltip(
+                `<div>
+                     A557: CORONEL PACHECO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3340b13bda3d2875c79509efd01d228d.setIcon(icon_8ee0a5d97c8ee369352e0082ef9c3105);
+            
+    
+            var marker_215106dba97fbfa3b7fb3eb345e2fdb9 = L.marker(
+                [-18.74777777, -44.45388888],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_006bb27bdbd8f045bf339954e439d033 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fea64f140ad1391e939438efa0235302 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a040fbb270725c28d9a66f040cff6eab = $(`<div id="html_a040fbb270725c28d9a66f040cff6eab" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>CURVELO</b></h4>                 <hr>                 <p><b>Código:</b> A538</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 669.48m</p>                 <p><b>Coordenadas:</b> -18.7478, -44.4539</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_fea64f140ad1391e939438efa0235302.setContent(html_a040fbb270725c28d9a66f040cff6eab);
+            
+        
+
+        marker_215106dba97fbfa3b7fb3eb345e2fdb9.bindPopup(popup_fea64f140ad1391e939438efa0235302)
+        ;
+
+        
+    
+    
+            marker_215106dba97fbfa3b7fb3eb345e2fdb9.bindTooltip(
+                `<div>
+                     A538: CURVELO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_215106dba97fbfa3b7fb3eb345e2fdb9.setIcon(icon_006bb27bdbd8f045bf339954e439d033);
+            
+    
+            var marker_caa8609c51a0016fcaf3f50ddb9471e0 = L.marker(
+                [-18.231052, -43.648269],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_35d09eb1b1ec801466d9700d1f8c277b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_11bc2265cfb7cd602e057b7139d015c0 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_20a7e86cfadb559fc49bf7d712ef61d7 = $(`<div id="html_20a7e86cfadb559fc49bf7d712ef61d7" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>DIAMANTINA</b></h4>                 <hr>                 <p><b>Código:</b> A537</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 1359.25m</p>                 <p><b>Coordenadas:</b> -18.2311, -43.6483</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_11bc2265cfb7cd602e057b7139d015c0.setContent(html_20a7e86cfadb559fc49bf7d712ef61d7);
+            
+        
+
+        marker_caa8609c51a0016fcaf3f50ddb9471e0.bindPopup(popup_11bc2265cfb7cd602e057b7139d015c0)
+        ;
+
+        
+    
+    
+            marker_caa8609c51a0016fcaf3f50ddb9471e0.bindTooltip(
+                `<div>
+                     A537: DIAMANTINA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_caa8609c51a0016fcaf3f50ddb9471e0.setIcon(icon_35d09eb1b1ec801466d9700d1f8c277b);
+            
+    
+            var marker_121a47f56b6f8fc179c244b0df5d154a = L.marker(
+                [-20.17333332, -44.87499999],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_ecf91c6ee1633041c9c3d42d72b197a4 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5486fd46797654313741e49de6f18cc6 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_56c83c67d0b924ee7d8884508fa00ced = $(`<div id="html_56c83c67d0b924ee7d8884508fa00ced" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>DIVINOPOLIS</b></h4>                 <hr>                 <p><b>Código:</b> A564</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 796m</p>                 <p><b>Coordenadas:</b> -20.1733, -44.8750</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_5486fd46797654313741e49de6f18cc6.setContent(html_56c83c67d0b924ee7d8884508fa00ced);
+            
+        
+
+        marker_121a47f56b6f8fc179c244b0df5d154a.bindPopup(popup_5486fd46797654313741e49de6f18cc6)
+        ;
+
+        
+    
+    
+            marker_121a47f56b6f8fc179c244b0df5d154a.bindTooltip(
+                `<div>
+                     A564: DIVINOPOLIS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_121a47f56b6f8fc179c244b0df5d154a.setIcon(icon_ecf91c6ee1633041c9c3d42d72b197a4);
+            
+    
+            var marker_aba002298a7194d073a175739ca27fce = L.marker(
+                [-19.48194443, -45.59388888],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_fb7779187570b44bf5c62dadae91dd5c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4f3a3845f4b1de26ff3f21ea36fe032a = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_28591429ffc2834ba530ec9ae35609b0 = $(`<div id="html_28591429ffc2834ba530ec9ae35609b0" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>DORES DO INDAIA</b></h4>                 <hr>                 <p><b>Código:</b> A536</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 721.09m</p>                 <p><b>Coordenadas:</b> -19.4819, -45.5939</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_4f3a3845f4b1de26ff3f21ea36fe032a.setContent(html_28591429ffc2834ba530ec9ae35609b0);
+            
+        
+
+        marker_aba002298a7194d073a175739ca27fce.bindPopup(popup_4f3a3845f4b1de26ff3f21ea36fe032a)
+        ;
+
+        
+    
+    
+            marker_aba002298a7194d073a175739ca27fce.bindTooltip(
+                `<div>
+                     A536: DORES DO INDAIA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_aba002298a7194d073a175739ca27fce.setIcon(icon_fb7779187570b44bf5c62dadae91dd5c);
+            
+    
+            var marker_deab7549fd52acc0831f0302140ec3b1 = L.marker(
+                [-14.91222222, -42.80861111],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_567c141afe914cad342f8dd4fb6688fd = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ca1eb5ec762004a1e3131b307ff7e0ff = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_8222f718452f67fba7f5fc108a9e4695 = $(`<div id="html_8222f718452f67fba7f5fc108a9e4695" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>ESPINOSA</b></h4>                 <hr>                 <p><b>Código:</b> A543</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 565.36m</p>                 <p><b>Coordenadas:</b> -14.9122, -42.8086</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_ca1eb5ec762004a1e3131b307ff7e0ff.setContent(html_8222f718452f67fba7f5fc108a9e4695);
+            
+        
+
+        marker_deab7549fd52acc0831f0302140ec3b1.bindPopup(popup_ca1eb5ec762004a1e3131b307ff7e0ff)
+        ;
+
+        
+    
+    
+            marker_deab7549fd52acc0831f0302140ec3b1.bindTooltip(
+                `<div>
+                     A543: ESPINOSA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_deab7549fd52acc0831f0302140ec3b1.setIcon(icon_567c141afe914cad342f8dd4fb6688fd);
+            
+    
+            var marker_5a09b4ce4c61601fecc64dddbf8d7be7 = L.marker(
+                [-19.88527777, -44.41694443],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_ba64bf94b281f1163a50b5ee1eb1a183 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f817549976e779260535dca78fe442ca = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f0a7476a537caef344d4bc570796822e = $(`<div id="html_f0a7476a537caef344d4bc570796822e" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>FLORESTAL</b></h4>                 <hr>                 <p><b>Código:</b> A535</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 753.5m</p>                 <p><b>Coordenadas:</b> -19.8853, -44.4169</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_f817549976e779260535dca78fe442ca.setContent(html_f0a7476a537caef344d4bc570796822e);
+            
+        
+
+        marker_5a09b4ce4c61601fecc64dddbf8d7be7.bindPopup(popup_f817549976e779260535dca78fe442ca)
+        ;
+
+        
+    
+    
+            marker_5a09b4ce4c61601fecc64dddbf8d7be7.bindTooltip(
+                `<div>
+                     A535: FLORESTAL
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_5a09b4ce4c61601fecc64dddbf8d7be7.setIcon(icon_ba64bf94b281f1163a50b5ee1eb1a183);
+            
+    
+            var marker_6622f62348b5728e82dedf0c6a1ecf0a = L.marker(
+                [-20.455, -45.45388888],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_b16fc4d456c1f43372a33f59b4eaf15c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_80c78bd1fe33efd1e88028a85e3ae150 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d7657698e7cebfa29caa6f8506c16046 = $(`<div id="html_d7657698e7cebfa29caa6f8506c16046" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>FORMIGA</b></h4>                 <hr>                 <p><b>Código:</b> A524</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 878.14m</p>                 <p><b>Coordenadas:</b> -20.4550, -45.4539</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_80c78bd1fe33efd1e88028a85e3ae150.setContent(html_d7657698e7cebfa29caa6f8506c16046);
+            
+        
+
+        marker_6622f62348b5728e82dedf0c6a1ecf0a.bindPopup(popup_80c78bd1fe33efd1e88028a85e3ae150)
+        ;
+
+        
+    
+    
+            marker_6622f62348b5728e82dedf0c6a1ecf0a.bindTooltip(
+                `<div>
+                     A524: FORMIGA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_6622f62348b5728e82dedf0c6a1ecf0a.setIcon(icon_b16fc4d456c1f43372a33f59b4eaf15c);
+            
+    
+            var marker_2dd3e2b401164e7f9ee59b2602b62dc8 = L.marker(
+                [-18.83027777, -41.97694443],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_96803ce62c140918be23ed5217051828 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_559b343bb1b58376e2913116ebd4c140 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_68701c5b987e14c8f88faf1bdfe8c1a4 = $(`<div id="html_68701c5b987e14c8f88faf1bdfe8c1a4" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>GOVERNADOR VALADARES</b></h4>                 <hr>                 <p><b>Código:</b> A532</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 198.24m</p>                 <p><b>Coordenadas:</b> -18.8303, -41.9769</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_559b343bb1b58376e2913116ebd4c140.setContent(html_68701c5b987e14c8f88faf1bdfe8c1a4);
+            
+        
+
+        marker_2dd3e2b401164e7f9ee59b2602b62dc8.bindPopup(popup_559b343bb1b58376e2913116ebd4c140)
+        ;
+
+        
+    
+    
+            marker_2dd3e2b401164e7f9ee59b2602b62dc8.bindTooltip(
+                `<div>
+                     A532: GOVERNADOR VALADARES
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_2dd3e2b401164e7f9ee59b2602b62dc8.setIcon(icon_96803ce62c140918be23ed5217051828);
+            
+    
+            var marker_a597816ca4b25af0993217cee5df3235 = L.marker(
+                [-17.56138888, -47.19916666],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_f12cb1c451b32273b7004059ebfa20fa = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_64cc2ea38244a6f066fb29b4fc160f51 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_6f8ec4b7454262c6d0a81c1a6f5ffebe = $(`<div id="html_6f8ec4b7454262c6d0a81c1a6f5ffebe" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>GUARDA-MOR</b></h4>                 <hr>                 <p><b>Código:</b> A546</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 997.01m</p>                 <p><b>Coordenadas:</b> -17.5614, -47.1992</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_64cc2ea38244a6f066fb29b4fc160f51.setContent(html_6f8ec4b7454262c6d0a81c1a6f5ffebe);
+            
+        
+
+        marker_a597816ca4b25af0993217cee5df3235.bindPopup(popup_64cc2ea38244a6f066fb29b4fc160f51)
+        ;
+
+        
+    
+    
+            marker_a597816ca4b25af0993217cee5df3235.bindTooltip(
+                `<div>
+                     A546: GUARDA-MOR
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a597816ca4b25af0993217cee5df3235.setIcon(icon_f12cb1c451b32273b7004059ebfa20fa);
+            
+    
+            var marker_93e516faf9c3dee4864f492f20d902f4 = L.marker(
+                [-20.03138888, -44.01111111],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_9e1254baf70a8b19fd9de428cb7ca3c3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_42f5dc4c586f028ea291e02b96961bc2 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_1907708e5c07d1763ad3674ba34fcd8a = $(`<div id="html_1907708e5c07d1763ad3674ba34fcd8a" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>IBIRITE (ROLA MOCA)</b></h4>                 <hr>                 <p><b>Código:</b> A555</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 1198.82m</p>                 <p><b>Coordenadas:</b> -20.0314, -44.0111</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_42f5dc4c586f028ea291e02b96961bc2.setContent(html_1907708e5c07d1763ad3674ba34fcd8a);
+            
+        
+
+        marker_93e516faf9c3dee4864f492f20d902f4.bindPopup(popup_42f5dc4c586f028ea291e02b96961bc2)
+        ;
+
+        
+    
+    
+            marker_93e516faf9c3dee4864f492f20d902f4.bindTooltip(
+                `<div>
+                     A555: IBIRITE (ROLA MOCA)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_93e516faf9c3dee4864f492f20d902f4.setIcon(icon_9e1254baf70a8b19fd9de428cb7ca3c3);
+            
+    
+            var marker_19b58f3e187e5284a756b57aa5b05fb5 = L.marker(
+                [-18.95277777, -49.52499999],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_d2e90df11fe8efb31a7dcb8887f75475 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_552674c89d9816adeda4868f240def74 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_1eeb5951906659ee1e8d45bd8ecd4d8c = $(`<div id="html_1eeb5951906659ee1e8d45bd8ecd4d8c" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>ITUIUTABA</b></h4>                 <hr>                 <p><b>Código:</b> A512</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 540.08m</p>                 <p><b>Coordenadas:</b> -18.9528, -49.5250</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_552674c89d9816adeda4868f240def74.setContent(html_1eeb5951906659ee1e8d45bd8ecd4d8c);
+            
+        
+
+        marker_19b58f3e187e5284a756b57aa5b05fb5.bindPopup(popup_552674c89d9816adeda4868f240def74)
+        ;
+
+        
+    
+    
+            marker_19b58f3e187e5284a756b57aa5b05fb5.bindTooltip(
+                `<div>
+                     A512: ITUIUTABA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_19b58f3e187e5284a756b57aa5b05fb5.setIcon(icon_d2e90df11fe8efb31a7dcb8887f75475);
+            
+    
+            var marker_bfc9ee1b1156d1c959e387dabd6e3988 = L.marker(
+                [-15.44805555, -44.36638888],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_618c449931452e40783748c29c92a7f3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_beb2ab3e34c32044ce4710fda551c7c8 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_e2034f9876e6213730ed080dd94e6a90 = $(`<div id="html_e2034f9876e6213730ed080dd94e6a90" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>JANUARIA</b></h4>                 <hr>                 <p><b>Código:</b> A559</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 468m</p>                 <p><b>Coordenadas:</b> -15.4481, -44.3664</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_beb2ab3e34c32044ce4710fda551c7c8.setContent(html_e2034f9876e6213730ed080dd94e6a90);
+            
+        
+
+        marker_bfc9ee1b1156d1c959e387dabd6e3988.bindPopup(popup_beb2ab3e34c32044ce4710fda551c7c8)
+        ;
+
+        
+    
+    
+            marker_bfc9ee1b1156d1c959e387dabd6e3988.bindTooltip(
+                `<div>
+                     A559: JANUARIA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_bfc9ee1b1156d1c959e387dabd6e3988.setIcon(icon_618c449931452e40783748c29c92a7f3);
+            
+    
+            var marker_684d517eba1ee00bc3d65465423b3fdd = L.marker(
+                [-17.78444444, -46.11944443],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_b43d250384c66746f072cf5e43baaa05 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0935a719642bb22e689cee905790ceaa = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_039f328f0f22f107c64563da44c9214b = $(`<div id="html_039f328f0f22f107c64563da44c9214b" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>JOAO PINHEIRO</b></h4>                 <hr>                 <p><b>Código:</b> A553</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 877.05m</p>                 <p><b>Coordenadas:</b> -17.7844, -46.1194</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_0935a719642bb22e689cee905790ceaa.setContent(html_039f328f0f22f107c64563da44c9214b);
+            
+        
+
+        marker_684d517eba1ee00bc3d65465423b3fdd.bindPopup(popup_0935a719642bb22e689cee905790ceaa)
+        ;
+
+        
+    
+    
+            marker_684d517eba1ee00bc3d65465423b3fdd.bindTooltip(
+                `<div>
+                     A553: JOAO PINHEIRO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_684d517eba1ee00bc3d65465423b3fdd.setIcon(icon_b43d250384c66746f072cf5e43baaa05);
+            
+    
+            var marker_a5218e665f8972ae9e3bf3cc16b633b2 = L.marker(
+                [-21.76999999, -43.36444444],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_dabdd98536ef86096d93771383f00950 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_851d68d7e79bb17372d532bfff12f744 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_255a3b5ea350f08d6286b2bd44c5fc7a = $(`<div id="html_255a3b5ea350f08d6286b2bd44c5fc7a" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>JUIZ DE FORA</b></h4>                 <hr>                 <p><b>Código:</b> A518</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 936.88m</p>                 <p><b>Coordenadas:</b> -21.7700, -43.3644</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_851d68d7e79bb17372d532bfff12f744.setContent(html_255a3b5ea350f08d6286b2bd44c5fc7a);
+            
+        
+
+        marker_a5218e665f8972ae9e3bf3cc16b633b2.bindPopup(popup_851d68d7e79bb17372d532bfff12f744)
+        ;
+
+        
+    
+    
+            marker_a5218e665f8972ae9e3bf3cc16b633b2.bindTooltip(
+                `<div>
+                     A518: JUIZ DE FORA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a5218e665f8972ae9e3bf3cc16b633b2.setIcon(icon_dabdd98536ef86096d93771383f00950);
+            
+    
+            var marker_2b451d75fb15e3cbf6422ea0003d9179 = L.marker(
+                [-21.68083332, -45.94444444],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_f5d7ca7a91d30a50b77e74ae287f4afa = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_200e34925adda3967bf438afe3268198 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_443e05ea69471e52c90dc1646105f4a7 = $(`<div id="html_443e05ea69471e52c90dc1646105f4a7" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>MACHADO</b></h4>                 <hr>                 <p><b>Código:</b> A567</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 969m</p>                 <p><b>Coordenadas:</b> -21.6808, -45.9444</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_200e34925adda3967bf438afe3268198.setContent(html_443e05ea69471e52c90dc1646105f4a7);
+            
+        
+
+        marker_2b451d75fb15e3cbf6422ea0003d9179.bindPopup(popup_200e34925adda3967bf438afe3268198)
+        ;
+
+        
+    
+    
+            marker_2b451d75fb15e3cbf6422ea0003d9179.bindTooltip(
+                `<div>
+                     A567: MACHADO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_2b451d75fb15e3cbf6422ea0003d9179.setIcon(icon_f5d7ca7a91d30a50b77e74ae287f4afa);
+            
+    
+            var marker_451a1adbc6d917fa52971ec1cc64c3c7 = L.marker(
+                [-20.26333333, -42.18277777],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_84097cbac67c61298b70af6e1d53e732 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_46aaf0b9555dcc4d80636e4e01db3a4f = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_0bc9dffed8336e500bca082fad2c8059 = $(`<div id="html_0bc9dffed8336e500bca082fad2c8059" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>MANHUACU</b></h4>                 <hr>                 <p><b>Código:</b> A556</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 819.47m</p>                 <p><b>Coordenadas:</b> -20.2633, -42.1828</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_46aaf0b9555dcc4d80636e4e01db3a4f.setContent(html_0bc9dffed8336e500bca082fad2c8059);
+            
+        
+
+        marker_451a1adbc6d917fa52971ec1cc64c3c7.bindPopup(popup_46aaf0b9555dcc4d80636e4e01db3a4f)
+        ;
+
+        
+    
+    
+            marker_451a1adbc6d917fa52971ec1cc64c3c7.bindTooltip(
+                `<div>
+                     A556: MANHUACU
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_451a1adbc6d917fa52971ec1cc64c3c7.setIcon(icon_84097cbac67c61298b70af6e1d53e732);
+            
+    
+            var marker_8d8e07a58e0ccece4dd504a9b83ba7be = L.marker(
+                [-18.78055554, -40.98638888],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_7fddc8a714e4e0ba3a9dc6f6fadc75d0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_04dffb2a2522f3df015916c5afc0f1e5 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_48eca68b09741d7d653a12b0e18618a4 = $(`<div id="html_48eca68b09741d7d653a12b0e18618a4" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>MANTENA</b></h4>                 <hr>                 <p><b>Código:</b> A540</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 254.91m</p>                 <p><b>Coordenadas:</b> -18.7806, -40.9864</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_04dffb2a2522f3df015916c5afc0f1e5.setContent(html_48eca68b09741d7d653a12b0e18618a4);
+            
+        
+
+        marker_8d8e07a58e0ccece4dd504a9b83ba7be.bindPopup(popup_04dffb2a2522f3df015916c5afc0f1e5)
+        ;
+
+        
+    
+    
+            marker_8d8e07a58e0ccece4dd504a9b83ba7be.bindTooltip(
+                `<div>
+                     A540: MANTENA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_8d8e07a58e0ccece4dd504a9b83ba7be.setIcon(icon_7fddc8a714e4e0ba3a9dc6f6fadc75d0);
+            
+    
+            var marker_cc3ec0a18e8cff22696cce3edbe8bd0a = L.marker(
+                [-22.31444444, -45.37305554],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_ccc2fc0bbad79a4093e33e675420c654 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2ab7809b1a5e8d1f07c110b9dc45ba71 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f472504296f0a17fc030945496f77b1d = $(`<div id="html_f472504296f0a17fc030945496f77b1d" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>MARIA DA FE</b></h4>                 <hr>                 <p><b>Código:</b> A531</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 1281.43m</p>                 <p><b>Coordenadas:</b> -22.3144, -45.3731</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_2ab7809b1a5e8d1f07c110b9dc45ba71.setContent(html_f472504296f0a17fc030945496f77b1d);
+            
+        
+
+        marker_cc3ec0a18e8cff22696cce3edbe8bd0a.bindPopup(popup_2ab7809b1a5e8d1f07c110b9dc45ba71)
+        ;
+
+        
+    
+    
+            marker_cc3ec0a18e8cff22696cce3edbe8bd0a.bindTooltip(
+                `<div>
+                     A531: MARIA DA FE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_cc3ec0a18e8cff22696cce3edbe8bd0a.setIcon(icon_ccc2fc0bbad79a4093e33e675420c654);
+            
+    
+            var marker_3e481051e27f8477ca6a69c54263624f = L.marker(
+                [-15.08583333, -44.01611111],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_2cb34174dfb557dd197a68ee20c18035 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7c2bcfea4f071db821dc0f1026d33bca = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_593d1020700cd6440bb14754d0440cab = $(`<div id="html_593d1020700cd6440bb14754d0440cab" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>MOCAMBINHO</b></h4>                 <hr>                 <p><b>Código:</b> A539</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 454m</p>                 <p><b>Coordenadas:</b> -15.0858, -44.0161</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_7c2bcfea4f071db821dc0f1026d33bca.setContent(html_593d1020700cd6440bb14754d0440cab);
+            
+        
+
+        marker_3e481051e27f8477ca6a69c54263624f.bindPopup(popup_7c2bcfea4f071db821dc0f1026d33bca)
+        ;
+
+        
+    
+    
+            marker_3e481051e27f8477ca6a69c54263624f.bindTooltip(
+                `<div>
+                     A539: MOCAMBINHO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3e481051e27f8477ca6a69c54263624f.setIcon(icon_2cb34174dfb557dd197a68ee20c18035);
+            
+    
+            var marker_d4c67255eb7dd7527456be05be649ecf = L.marker(
+                [-14.40833333, -44.40416666],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_42739f8bd0f015988bfe6b0b6e5dbdbd = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_692c72f42d23b934644e539a32cc34ba = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_316d059d2d2e4757dd2a9f32516f6c9d = $(`<div id="html_316d059d2d2e4757dd2a9f32516f6c9d" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>MONTALVANIA</b></h4>                 <hr>                 <p><b>Código:</b> A526</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 519.52m</p>                 <p><b>Coordenadas:</b> -14.4083, -44.4042</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_692c72f42d23b934644e539a32cc34ba.setContent(html_316d059d2d2e4757dd2a9f32516f6c9d);
+            
+        
+
+        marker_d4c67255eb7dd7527456be05be649ecf.bindPopup(popup_692c72f42d23b934644e539a32cc34ba)
+        ;
+
+        
+    
+    
+            marker_d4c67255eb7dd7527456be05be649ecf.bindTooltip(
+                `<div>
+                     A526: MONTALVANIA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_d4c67255eb7dd7527456be05be649ecf.setIcon(icon_42739f8bd0f015988bfe6b0b6e5dbdbd);
+            
+    
+            var marker_7897d5f6c21391c7d39a7e788035f19a = L.marker(
+                [-22.86166666, -46.04333333],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_afd4ccdd8104cf4fa9dce444a18b8838 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c6715e7a85ae281f59627848e39eadf2 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_ace5b89869c26d8cf5fc0c5a742c5cb5 = $(`<div id="html_ace5b89869c26d8cf5fc0c5a742c5cb5" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>MONTE VERDE</b></h4>                 <hr>                 <p><b>Código:</b> A509</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 1544.89m</p>                 <p><b>Coordenadas:</b> -22.8617, -46.0433</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_c6715e7a85ae281f59627848e39eadf2.setContent(html_ace5b89869c26d8cf5fc0c5a742c5cb5);
+            
+        
+
+        marker_7897d5f6c21391c7d39a7e788035f19a.bindPopup(popup_c6715e7a85ae281f59627848e39eadf2)
+        ;
+
+        
+    
+    
+            marker_7897d5f6c21391c7d39a7e788035f19a.bindTooltip(
+                `<div>
+                     A509: MONTE VERDE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7897d5f6c21391c7d39a7e788035f19a.setIcon(icon_afd4ccdd8104cf4fa9dce444a18b8838);
+            
+    
+            var marker_22f2efb0e18e1400dd6517bf46d079ad = L.marker(
+                [-16.68638888, -43.84388888],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_33dfabe03211e36fbd45131a07b25a57 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9f9c333d34b906045f26483dc07d43dc = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f1f00d47466ddd87efd8f5e498692a0d = $(`<div id="html_f1f00d47466ddd87efd8f5e498692a0d" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>MONTES CLAROS</b></h4>                 <hr>                 <p><b>Código:</b> A506</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 645.87m</p>                 <p><b>Coordenadas:</b> -16.6864, -43.8439</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_9f9c333d34b906045f26483dc07d43dc.setContent(html_f1f00d47466ddd87efd8f5e498692a0d);
+            
+        
+
+        marker_22f2efb0e18e1400dd6517bf46d079ad.bindPopup(popup_9f9c333d34b906045f26483dc07d43dc)
+        ;
+
+        
+    
+    
+            marker_22f2efb0e18e1400dd6517bf46d079ad.bindTooltip(
+                `<div>
+                     A506: MONTES CLAROS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_22f2efb0e18e1400dd6517bf46d079ad.setIcon(icon_33dfabe03211e36fbd45131a07b25a57);
+            
+    
+            var marker_a0798779b31c542e3d3afb5d0b28c5e5 = L.marker(
+                [-21.105, -42.37583332],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_97d73827eedafdafc9a7a635c33ef989 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_dd265df1b30071b0ba898856bf0a77c8 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_fed894dac6c6f0e649155843b32221c9 = $(`<div id="html_fed894dac6c6f0e649155843b32221c9" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>MURIAE</b></h4>                 <hr>                 <p><b>Código:</b> A517</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 282.79m</p>                 <p><b>Coordenadas:</b> -21.1050, -42.3758</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_dd265df1b30071b0ba898856bf0a77c8.setContent(html_fed894dac6c6f0e649155843b32221c9);
+            
+        
+
+        marker_a0798779b31c542e3d3afb5d0b28c5e5.bindPopup(popup_dd265df1b30071b0ba898856bf0a77c8)
+        ;
+
+        
+    
+    
+            marker_a0798779b31c542e3d3afb5d0b28c5e5.bindTooltip(
+                `<div>
+                     A517: MURIAE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a0798779b31c542e3d3afb5d0b28c5e5.setIcon(icon_97d73827eedafdafc9a7a635c33ef989);
+            
+    
+            var marker_7fcca89a6472ea8e2a98aceb245108d6 = L.marker(
+                [-15.80277777, -43.29694444],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_76292697c437ad526b57f0f9a84d28fd = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_bba3d4608329914f65a93e2cc59521e3 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_01ec9fb0761bf7074c2ec851bddaa449 = $(`<div id="html_01ec9fb0761bf7074c2ec851bddaa449" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>NOVA PORTEIRINHA (JANAUBA)</b></h4>                 <hr>                 <p><b>Código:</b> A563</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 532m</p>                 <p><b>Coordenadas:</b> -15.8028, -43.2969</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_bba3d4608329914f65a93e2cc59521e3.setContent(html_01ec9fb0761bf7074c2ec851bddaa449);
+            
+        
+
+        marker_7fcca89a6472ea8e2a98aceb245108d6.bindPopup(popup_bba3d4608329914f65a93e2cc59521e3)
+        ;
+
+        
+    
+    
+            marker_7fcca89a6472ea8e2a98aceb245108d6.bindTooltip(
+                `<div>
+                     A563: NOVA PORTEIRINHA (JANAUBA)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7fcca89a6472ea8e2a98aceb245108d6.setIcon(icon_76292697c437ad526b57f0f9a84d28fd);
+            
+    
+            var marker_c6ba5e888dc0b878f67de1f597c7046b = L.marker(
+                [-20.715, -44.86444444],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_8a5be8d383fb214300f498aeb36f6778 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_448f903865ff76e4808b39352e4f7a77 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_7977f646a4278bb55c09189f3bef82d7 = $(`<div id="html_7977f646a4278bb55c09189f3bef82d7" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>OLIVEIRA</b></h4>                 <hr>                 <p><b>Código:</b> A570</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 1025m</p>                 <p><b>Coordenadas:</b> -20.7150, -44.8644</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_448f903865ff76e4808b39352e4f7a77.setContent(html_7977f646a4278bb55c09189f3bef82d7);
+            
+        
+
+        marker_c6ba5e888dc0b878f67de1f597c7046b.bindPopup(popup_448f903865ff76e4808b39352e4f7a77)
+        ;
+
+        
+    
+    
+            marker_c6ba5e888dc0b878f67de1f597c7046b.bindTooltip(
+                `<div>
+                     A570: OLIVEIRA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_c6ba5e888dc0b878f67de1f597c7046b.setIcon(icon_8a5be8d383fb214300f498aeb36f6778);
+            
+    
+            var marker_290de6309d490661b0145e2497321640 = L.marker(
+                [-20.55666666, -43.75611111],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_fd54402cf57368ddeb58d66b4209e4c9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0939da7d79a6243066991236fc829aa1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_78571a4fec4d1d5beb11957fc3c90f85 = $(`<div id="html_78571a4fec4d1d5beb11957fc3c90f85" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>OURO BRANCO</b></h4>                 <hr>                 <p><b>Código:</b> A513</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 1048.2m</p>                 <p><b>Coordenadas:</b> -20.5567, -43.7561</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_0939da7d79a6243066991236fc829aa1.setContent(html_78571a4fec4d1d5beb11957fc3c90f85);
+            
+        
+
+        marker_290de6309d490661b0145e2497321640.bindPopup(popup_0939da7d79a6243066991236fc829aa1)
+        ;
+
+        
+    
+    
+            marker_290de6309d490661b0145e2497321640.bindTooltip(
+                `<div>
+                     A513: OURO BRANCO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_290de6309d490661b0145e2497321640.setIcon(icon_fd54402cf57368ddeb58d66b4209e4c9);
+            
+    
+            var marker_367d5e85e190837acd5fe0890e0560d4 = L.marker(
+                [-17.24444444, -46.88166666],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_13fad413db116655a1e4f47ccc38b443 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_772c22b57e229ca3bb65cf85eccf00d5 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_068d75ad19d36a12aaa2afcda2f21cd4 = $(`<div id="html_068d75ad19d36a12aaa2afcda2f21cd4" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>PARACATU</b></h4>                 <hr>                 <p><b>Código:</b> A571</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 705m</p>                 <p><b>Coordenadas:</b> -17.2444, -46.8817</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_772c22b57e229ca3bb65cf85eccf00d5.setContent(html_068d75ad19d36a12aaa2afcda2f21cd4);
+            
+        
+
+        marker_367d5e85e190837acd5fe0890e0560d4.bindPopup(popup_772c22b57e229ca3bb65cf85eccf00d5)
+        ;
+
+        
+    
+    
+            marker_367d5e85e190837acd5fe0890e0560d4.bindTooltip(
+                `<div>
+                     A571: PARACATU
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_367d5e85e190837acd5fe0890e0560d4.setIcon(icon_13fad413db116655a1e4f47ccc38b443);
+            
+    
+            var marker_965fa6c2273cdc66649eaf6a6563bdc2 = L.marker(
+                [-22.39583333, -44.96194444],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_4170ce49b2726f275fa2a7070b79ef87 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b428669005d8338c105381082234c343 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_ff1dd50554d2d0bf76a8865ed0d11ff9 = $(`<div id="html_ff1dd50554d2d0bf76a8865ed0d11ff9" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>PASSA QUATRO</b></h4>                 <hr>                 <p><b>Código:</b> A529</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 1017.1m</p>                 <p><b>Coordenadas:</b> -22.3958, -44.9619</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_b428669005d8338c105381082234c343.setContent(html_ff1dd50554d2d0bf76a8865ed0d11ff9);
+            
+        
+
+        marker_965fa6c2273cdc66649eaf6a6563bdc2.bindPopup(popup_b428669005d8338c105381082234c343)
+        ;
+
+        
+    
+    
+            marker_965fa6c2273cdc66649eaf6a6563bdc2.bindTooltip(
+                `<div>
+                     A529: PASSA QUATRO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_965fa6c2273cdc66649eaf6a6563bdc2.setIcon(icon_4170ce49b2726f275fa2a7070b79ef87);
+            
+    
+            var marker_f9e2714003a2b07b5023fb90017bfcac = L.marker(
+                [-20.74527777, -46.63388888],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_57a1b1bb27760777ba92478320afb797 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fe22534234b36901eff08fd8447dc582 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_1a350be582a600eea652d8f9e20d0dea = $(`<div id="html_1a350be582a600eea652d8f9e20d0dea" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>PASSOS</b></h4>                 <hr>                 <p><b>Código:</b> A516</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 781.7m</p>                 <p><b>Coordenadas:</b> -20.7453, -46.6339</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_fe22534234b36901eff08fd8447dc582.setContent(html_1a350be582a600eea652d8f9e20d0dea);
+            
+        
+
+        marker_f9e2714003a2b07b5023fb90017bfcac.bindPopup(popup_fe22534234b36901eff08fd8447dc582)
+        ;
+
+        
+    
+    
+            marker_f9e2714003a2b07b5023fb90017bfcac.bindTooltip(
+                `<div>
+                     A516: PASSOS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f9e2714003a2b07b5023fb90017bfcac.setIcon(icon_57a1b1bb27760777ba92478320afb797);
+            
+    
+            var marker_b27c3d844e216d1ee60c545b2b709d8e = L.marker(
+                [-18.52055554, -46.44055555],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_dac7fb33e7ddf43ada0e065ef3f132b0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c794ae9694af97aba755cbd4804e6f83 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_287b13f300617646a0d93c9658b7adb5 = $(`<div id="html_287b13f300617646a0d93c9658b7adb5" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>PATOS DE MINAS</b></h4>                 <hr>                 <p><b>Código:</b> A562</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 950m</p>                 <p><b>Coordenadas:</b> -18.5206, -46.4406</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_c794ae9694af97aba755cbd4804e6f83.setContent(html_287b13f300617646a0d93c9658b7adb5);
+            
+        
+
+        marker_b27c3d844e216d1ee60c545b2b709d8e.bindPopup(popup_c794ae9694af97aba755cbd4804e6f83)
+        ;
+
+        
+    
+    
+            marker_b27c3d844e216d1ee60c545b2b709d8e.bindTooltip(
+                `<div>
+                     A562: PATOS DE MINAS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b27c3d844e216d1ee60c545b2b709d8e.setIcon(icon_dac7fb33e7ddf43ada0e065ef3f132b0);
+            
+    
+            var marker_f1ddb4b31e1e45f4cd36f0dd03340b94 = L.marker(
+                [-18.99666666, -46.98583333],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_3776c368a6e85a9c1bbf9e74d4dcdaa5 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c9323d3778e805679ee2b6592d7b310b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_ee1df31a00f24450634158d51cb0bfaa = $(`<div id="html_ee1df31a00f24450634158d51cb0bfaa" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>PATROCINIO</b></h4>                 <hr>                 <p><b>Código:</b> A523</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 978.11m</p>                 <p><b>Coordenadas:</b> -18.9967, -46.9858</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_c9323d3778e805679ee2b6592d7b310b.setContent(html_ee1df31a00f24450634158d51cb0bfaa);
+            
+        
+
+        marker_f1ddb4b31e1e45f4cd36f0dd03340b94.bindPopup(popup_c9323d3778e805679ee2b6592d7b310b)
+        ;
+
+        
+    
+    
+            marker_f1ddb4b31e1e45f4cd36f0dd03340b94.bindTooltip(
+                `<div>
+                     A523: PATROCINIO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f1ddb4b31e1e45f4cd36f0dd03340b94.setIcon(icon_3776c368a6e85a9c1bbf9e74d4dcdaa5);
+            
+    
+            var marker_3bf831e485e026977cafd29c8bad13a9 = L.marker(
+                [-17.258064, -44.835556],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_8c984959658473a581df2f5733d7a62b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_cf55328209bbb19b76eece0806e544b4 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_bcb0b126857d9dc1c60e07fb638e0192 = $(`<div id="html_bcb0b126857d9dc1c60e07fb638e0192" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>PIRAPORA</b></h4>                 <hr>                 <p><b>Código:</b> A545</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 505.32m</p>                 <p><b>Coordenadas:</b> -17.2581, -44.8356</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_cf55328209bbb19b76eece0806e544b4.setContent(html_bcb0b126857d9dc1c60e07fb638e0192);
+            
+        
+
+        marker_3bf831e485e026977cafd29c8bad13a9.bindPopup(popup_cf55328209bbb19b76eece0806e544b4)
+        ;
+
+        
+    
+    
+            marker_3bf831e485e026977cafd29c8bad13a9.bindTooltip(
+                `<div>
+                     A545: PIRAPORA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_3bf831e485e026977cafd29c8bad13a9.setIcon(icon_8c984959658473a581df2f5733d7a62b);
+            
+    
+            var marker_934d5d299a5d5858b8676e758bf9985f = L.marker(
+                [-19.23249999, -44.96416666],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_2a1f5800cf7ba46b11bc9feeac529f20 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3886c0451e4e545162471b5bb9decfed = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_aab6510179eee0697db88b0a722cf223 = $(`<div id="html_aab6510179eee0697db88b0a722cf223" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>POMPEU</b></h4>                 <hr>                 <p><b>Código:</b> A560</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 705m</p>                 <p><b>Coordenadas:</b> -19.2325, -44.9642</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_3886c0451e4e545162471b5bb9decfed.setContent(html_aab6510179eee0697db88b0a722cf223);
+            
+        
+
+        marker_934d5d299a5d5858b8676e758bf9985f.bindPopup(popup_3886c0451e4e545162471b5bb9decfed)
+        ;
+
+        
+    
+    
+            marker_934d5d299a5d5858b8676e758bf9985f.bindTooltip(
+                `<div>
+                     A560: POMPEU
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_934d5d299a5d5858b8676e758bf9985f.setIcon(icon_2a1f5800cf7ba46b11bc9feeac529f20);
+            
+    
+            var marker_915e3e022f7365cd00763e726a69d525 = L.marker(
+                [-15.72305554, -42.43583333],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_bf6ade5ae1ed7620f95dc5e476af5bec = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_bf48b9efe253efed69a5b854324764ab = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_76e46aa5f5dea26ca4a0ce79a7fa4566 = $(`<div id="html_76e46aa5f5dea26ca4a0ce79a7fa4566" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>RIO PARDO DE MINAS</b></h4>                 <hr>                 <p><b>Código:</b> A551</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 850.06m</p>                 <p><b>Coordenadas:</b> -15.7231, -42.4358</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_bf48b9efe253efed69a5b854324764ab.setContent(html_76e46aa5f5dea26ca4a0ce79a7fa4566);
+            
+        
+
+        marker_915e3e022f7365cd00763e726a69d525.bindPopup(popup_bf48b9efe253efed69a5b854324764ab)
+        ;
+
+        
+    
+    
+            marker_915e3e022f7365cd00763e726a69d525.bindTooltip(
+                `<div>
+                     A551: RIO PARDO DE MINAS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_915e3e022f7365cd00763e726a69d525.setIcon(icon_bf6ade5ae1ed7620f95dc5e476af5bec);
+            
+    
+            var marker_7b6ac3979f2d87767e7e109e148030ec = L.marker(
+                [-19.87527777, -47.43416666],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_ae1cd0b787a9a2d0b1ec3eb3b275d5d6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2d069d2cc508a06522bd7d6732c26d41 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_93fc87a7ecea2d14b06d5d501bd4822f = $(`<div id="html_93fc87a7ecea2d14b06d5d501bd4822f" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>SACRAMENTO</b></h4>                 <hr>                 <p><b>Código:</b> A525</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 913.12m</p>                 <p><b>Coordenadas:</b> -19.8753, -47.4342</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_2d069d2cc508a06522bd7d6732c26d41.setContent(html_93fc87a7ecea2d14b06d5d501bd4822f);
+            
+        
+
+        marker_7b6ac3979f2d87767e7e109e148030ec.bindPopup(popup_2d069d2cc508a06522bd7d6732c26d41)
+        ;
+
+        
+    
+    
+            marker_7b6ac3979f2d87767e7e109e148030ec.bindTooltip(
+                `<div>
+                     A525: SACRAMENTO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7b6ac3979f2d87767e7e109e148030ec.setIcon(icon_ae1cd0b787a9a2d0b1ec3eb3b275d5d6);
+            
+    
+            var marker_4e431dd16de2ad7e88353886e65d7a54 = L.marker(
+                [-16.16027777, -42.31027777],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_e2fefdce09ce0eddabbed67850f8b282 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_73999f79165176dd6b712f2c04d040a1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_83fcf022365ae3e34ca1fd9445bad42a = $(`<div id="html_83fcf022365ae3e34ca1fd9445bad42a" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>SALINAS</b></h4>                 <hr>                 <p><b>Código:</b> A552</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 487.14m</p>                 <p><b>Coordenadas:</b> -16.1603, -42.3103</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_73999f79165176dd6b712f2c04d040a1.setContent(html_83fcf022365ae3e34ca1fd9445bad42a);
+            
+        
+
+        marker_4e431dd16de2ad7e88353886e65d7a54.bindPopup(popup_73999f79165176dd6b712f2c04d040a1)
+        ;
+
+        
+    
+    
+            marker_4e431dd16de2ad7e88353886e65d7a54.bindTooltip(
+                `<div>
+                     A552: SALINAS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4e431dd16de2ad7e88353886e65d7a54.setIcon(icon_e2fefdce09ce0eddabbed67850f8b282);
+            
+    
+            var marker_8b62a68ecef4678405965f5c24d9d2d1 = L.marker(
+                [-21.10638888, -44.25083333],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_1602db1a9c07be1867c4bf5fc0c455ff = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a81b2b35049f70d8684e7564a142575a = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_c8506c2721239f72ff4dbe2aefb8a629 = $(`<div id="html_c8506c2721239f72ff4dbe2aefb8a629" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>SAO JOAO DEL REI</b></h4>                 <hr>                 <p><b>Código:</b> A514</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 929.88m</p>                 <p><b>Coordenadas:</b> -21.1064, -44.2508</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_a81b2b35049f70d8684e7564a142575a.setContent(html_c8506c2721239f72ff4dbe2aefb8a629);
+            
+        
+
+        marker_8b62a68ecef4678405965f5c24d9d2d1.bindPopup(popup_a81b2b35049f70d8684e7564a142575a)
+        ;
+
+        
+    
+    
+            marker_8b62a68ecef4678405965f5c24d9d2d1.bindTooltip(
+                `<div>
+                     A514: SAO JOAO DEL REI
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_8b62a68ecef4678405965f5c24d9d2d1.setIcon(icon_1602db1a9c07be1867c4bf5fc0c455ff);
+            
+    
+            var marker_aee770161ba0733eb5951a7387f1f463 = L.marker(
+                [-17.79888888, -40.25],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_11400b5874d37791bb47c3795523301a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_cd61053a30cc844f78070330e417077c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f52c33dc9756827b8ee821068a05ad73 = $(`<div id="html_f52c33dc9756827b8ee821068a05ad73" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>SERRA DOS AIMORES</b></h4>                 <hr>                 <p><b>Código:</b> A522</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 211.97m</p>                 <p><b>Coordenadas:</b> -17.7989, -40.2500</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_cd61053a30cc844f78070330e417077c.setContent(html_f52c33dc9756827b8ee821068a05ad73);
+            
+        
+
+        marker_aee770161ba0733eb5951a7387f1f463.bindPopup(popup_cd61053a30cc844f78070330e417077c)
+        ;
+
+        
+    
+    
+            marker_aee770161ba0733eb5951a7387f1f463.bindTooltip(
+                `<div>
+                     A522: SERRA DOS AIMORES
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_aee770161ba0733eb5951a7387f1f463.setIcon(icon_11400b5874d37791bb47c3795523301a);
+            
+    
+            var marker_44dbc0fdc0b63736b71a65df333807fd = L.marker(
+                [-19.45527777, -44.17333332],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_e99f3f62878bc9d8dd5ff0e4ecee3b48 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ffd2a46cde50a7ebaf2d1f83959cd675 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_b9bc06665794420fbf6bd37f0b7cdd9b = $(`<div id="html_b9bc06665794420fbf6bd37f0b7cdd9b" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>SETE LAGOAS</b></h4>                 <hr>                 <p><b>Código:</b> A569</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 719m</p>                 <p><b>Coordenadas:</b> -19.4553, -44.1733</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_ffd2a46cde50a7ebaf2d1f83959cd675.setContent(html_b9bc06665794420fbf6bd37f0b7cdd9b);
+            
+        
+
+        marker_44dbc0fdc0b63736b71a65df333807fd.bindPopup(popup_ffd2a46cde50a7ebaf2d1f83959cd675)
+        ;
+
+        
+    
+    
+            marker_44dbc0fdc0b63736b71a65df333807fd.bindTooltip(
+                `<div>
+                     A569: SETE LAGOAS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_44dbc0fdc0b63736b71a65df333807fd.setIcon(icon_e99f3f62878bc9d8dd5ff0e4ecee3b48);
+            
+    
+            var marker_09fc6176ac01a037eea9bc4d101dec30 = L.marker(
+                [-17.89277777, -41.51555555],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_d80908b9941597716f9e7025536f89d0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_23b396356adfb1352800b5ebb220da2f = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_fa1203c35569a35bdbd75a5c8bf60e45 = $(`<div id="html_fa1203c35569a35bdbd75a5c8bf60e45" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>TEOFILO OTONI</b></h4>                 <hr>                 <p><b>Código:</b> A527</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 467.17m</p>                 <p><b>Coordenadas:</b> -17.8928, -41.5156</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_23b396356adfb1352800b5ebb220da2f.setContent(html_fa1203c35569a35bdbd75a5c8bf60e45);
+            
+        
+
+        marker_09fc6176ac01a037eea9bc4d101dec30.bindPopup(popup_23b396356adfb1352800b5ebb220da2f)
+        ;
+
+        
+    
+    
+            marker_09fc6176ac01a037eea9bc4d101dec30.bindTooltip(
+                `<div>
+                     A527: TEOFILO OTONI
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_09fc6176ac01a037eea9bc4d101dec30.setIcon(icon_d80908b9941597716f9e7025536f89d0);
+            
+    
+            var marker_4a774b52fa3c39f65ca1fac61f7f2f10 = L.marker(
+                [-19.57388888, -42.62249999],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_f5132d4602c952629a09fa55c1628e05 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a6b59e7eef218e11275464a9c5e85952 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_356525d2c6ea208e2dd5f9665414f901 = $(`<div id="html_356525d2c6ea208e2dd5f9665414f901" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>TIMOTEO</b></h4>                 <hr>                 <p><b>Código:</b> A511</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 493.42m</p>                 <p><b>Coordenadas:</b> -19.5739, -42.6225</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_a6b59e7eef218e11275464a9c5e85952.setContent(html_356525d2c6ea208e2dd5f9665414f901);
+            
+        
+
+        marker_4a774b52fa3c39f65ca1fac61f7f2f10.bindPopup(popup_a6b59e7eef218e11275464a9c5e85952)
+        ;
+
+        
+    
+    
+            marker_4a774b52fa3c39f65ca1fac61f7f2f10.bindTooltip(
+                `<div>
+                     A511: TIMOTEO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4a774b52fa3c39f65ca1fac61f7f2f10.setIcon(icon_f5132d4602c952629a09fa55c1628e05);
+            
+    
+            var marker_363dd2341b00062fb0cfb75aa8960b21 = L.marker(
+                [-18.20083333, -45.45972222],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_1cb1b9f75fb20fa04067da6355101069 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_61179cba8e360e277fffe887c2b2b4d7 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_5d570379ff195a18f50514d57b44ab18 = $(`<div id="html_5d570379ff195a18f50514d57b44ab18" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>TRES MARIAS</b></h4>                 <hr>                 <p><b>Código:</b> A528</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 931.01m</p>                 <p><b>Coordenadas:</b> -18.2008, -45.4597</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_61179cba8e360e277fffe887c2b2b4d7.setContent(html_5d570379ff195a18f50514d57b44ab18);
+            
+        
+
+        marker_363dd2341b00062fb0cfb75aa8960b21.bindPopup(popup_61179cba8e360e277fffe887c2b2b4d7)
+        ;
+
+        
+    
+    
+            marker_363dd2341b00062fb0cfb75aa8960b21.bindTooltip(
+                `<div>
+                     A528: TRES MARIAS
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_363dd2341b00062fb0cfb75aa8960b21.setIcon(icon_1cb1b9f75fb20fa04067da6355101069);
+            
+    
+            var marker_63098ec6229ff8971a78db19452f2e8f = L.marker(
+                [-19.71, -47.96194444],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_ae6fc17f74dc17280942771d3e079ca7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_731e630f02a1a08d01e883f3dc24449e = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_5fa1328ae43a482d440d4f65367a20e7 = $(`<div id="html_5fa1328ae43a482d440d4f65367a20e7" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>UBERABA</b></h4>                 <hr>                 <p><b>Código:</b> A568</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 778m</p>                 <p><b>Coordenadas:</b> -19.7100, -47.9619</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_731e630f02a1a08d01e883f3dc24449e.setContent(html_5fa1328ae43a482d440d4f65367a20e7);
+            
+        
+
+        marker_63098ec6229ff8971a78db19452f2e8f.bindPopup(popup_731e630f02a1a08d01e883f3dc24449e)
+        ;
+
+        
+    
+    
+            marker_63098ec6229ff8971a78db19452f2e8f.bindTooltip(
+                `<div>
+                     A568: UBERABA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_63098ec6229ff8971a78db19452f2e8f.setIcon(icon_ae6fc17f74dc17280942771d3e079ca7);
+            
+    
+            var marker_626eed83c74b2d8708c205641a6a817f = L.marker(
+                [-18.91694443, -48.25555555],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_80269e3411ca1f00803aefcb086a699c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_05a4ced11f10abfd2c9f8b66f5fcfd78 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f58164c83979d3ba80c92056eb3c03c0 = $(`<div id="html_f58164c83979d3ba80c92056eb3c03c0" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>UBERLANDIA</b></h4>                 <hr>                 <p><b>Código:</b> A507</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 874.77m</p>                 <p><b>Coordenadas:</b> -18.9169, -48.2556</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_05a4ced11f10abfd2c9f8b66f5fcfd78.setContent(html_f58164c83979d3ba80c92056eb3c03c0);
+            
+        
+
+        marker_626eed83c74b2d8708c205641a6a817f.bindPopup(popup_05a4ced11f10abfd2c9f8b66f5fcfd78)
+        ;
+
+        
+    
+    
+            marker_626eed83c74b2d8708c205641a6a817f.bindTooltip(
+                `<div>
+                     A507: UBERLANDIA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_626eed83c74b2d8708c205641a6a817f.setIcon(icon_80269e3411ca1f00803aefcb086a699c);
+            
+    
+            var marker_823a538fb31245c9c1b0e592629033b2 = L.marker(
+                [-16.55416666, -46.88194443],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_e762828dc24fdf94099bd5ce9f35c496 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5fec39bab405e026fc7909a7ad6add2b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_34f2ba21dd03199a6a2240c9b2d9b40a = $(`<div id="html_34f2ba21dd03199a6a2240c9b2d9b40a" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>UNAI</b></h4>                 <hr>                 <p><b>Código:</b> A542</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 640.85m</p>                 <p><b>Coordenadas:</b> -16.5542, -46.8819</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_5fec39bab405e026fc7909a7ad6add2b.setContent(html_34f2ba21dd03199a6a2240c9b2d9b40a);
+            
+        
+
+        marker_823a538fb31245c9c1b0e592629033b2.bindPopup(popup_5fec39bab405e026fc7909a7ad6add2b)
+        ;
+
+        
+    
+    
+            marker_823a538fb31245c9c1b0e592629033b2.bindTooltip(
+                `<div>
+                     A542: UNAI
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_823a538fb31245c9c1b0e592629033b2.setIcon(icon_e762828dc24fdf94099bd5ce9f35c496);
+            
+    
+            var marker_e535eaabf7ba1168d57af86d4e0a3b9d = L.marker(
+                [-21.56638888, -45.40416666],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_97bc5252a69f56f72e505ad191af1d34 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_87bea67f26c667677365a99f0401839b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_600977312c5f6f027ba2aea4328183de = $(`<div id="html_600977312c5f6f027ba2aea4328183de" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>VARGINHA</b></h4>                 <hr>                 <p><b>Código:</b> A515</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 949.78m</p>                 <p><b>Coordenadas:</b> -21.5664, -45.4042</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_87bea67f26c667677365a99f0401839b.setContent(html_600977312c5f6f027ba2aea4328183de);
+            
+        
+
+        marker_e535eaabf7ba1168d57af86d4e0a3b9d.bindPopup(popup_87bea67f26c667677365a99f0401839b)
+        ;
+
+        
+    
+    
+            marker_e535eaabf7ba1168d57af86d4e0a3b9d.bindTooltip(
+                `<div>
+                     A515: VARGINHA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e535eaabf7ba1168d57af86d4e0a3b9d.setIcon(icon_97bc5252a69f56f72e505ad191af1d34);
+            
+    
+            var marker_1261f0858162d0e95f1918761783a177 = L.marker(
+                [-20.7625, -42.86388888],
+                {
+}
+            ).addTo(marker_cluster_d6e1f54600324b6a9f2daccd3c562cda);
+        
+    
+            var icon_d68806b91104a2ab32230b6588176732 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_54fe61da7bf678ab402fcb9bbf901afa = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_fb4591349208229adbc52c027e2e425c = $(`<div id="html_fb4591349208229adbc52c027e2e425c" style="width: 100.0%; height: 100.0%;">             <div style="width: 250px;">                 <h4><b>VICOSA</b></h4>                 <hr>                 <p><b>Código:</b> A510</p>                 <p><b>Tipo:</b> Automatica</p>                 <p><b>Altitude:</b> 697.64m</p>                 <p><b>Coordenadas:</b> -20.7625, -42.8639</p>                 <p><b>Status:</b> Operante</p>             </div>             </div>`)[0];
+                popup_54fe61da7bf678ab402fcb9bbf901afa.setContent(html_fb4591349208229adbc52c027e2e425c);
+            
+        
+
+        marker_1261f0858162d0e95f1918761783a177.bindPopup(popup_54fe61da7bf678ab402fcb9bbf901afa)
+        ;
+
+        
+    
+    
+            marker_1261f0858162d0e95f1918761783a177.bindTooltip(
+                `<div>
+                     A510: VICOSA
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_1261f0858162d0e95f1918761783a177.setIcon(icon_d68806b91104a2ab32230b6588176732);
+            
+    
+            marker_cluster_d6e1f54600324b6a9f2daccd3c562cda.addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+            var circle_5f69b5a67df9c53455ccbe54ba1d6150 = L.circle(
+                [-19.9167, -43.9345],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2000, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_bb59edf1c77f0ded629ba85381d15030 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_4d6787e1ccb8137bab2cd2f29a832291 = $(`<div id="html_4d6787e1ccb8137bab2cd2f29a832291" style="width: 100.0%; height: 100.0%;"><b>BELO HORIZONTE</b><br>Risco: ALTO</div>`)[0];
+                popup_bb59edf1c77f0ded629ba85381d15030.setContent(html_4d6787e1ccb8137bab2cd2f29a832291);
+            
+        
+
+        circle_5f69b5a67df9c53455ccbe54ba1d6150.bindPopup(popup_bb59edf1c77f0ded629ba85381d15030)
+        ;
+
+        
+    
+    
+            circle_5f69b5a67df9c53455ccbe54ba1d6150.bindTooltip(
+                `<div>
+                     BELO HORIZONTE - Risco ALTO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_4f330f3fc5ce95b9340261496e2f019b = L.circle(
+                [-19.9858, -43.8465],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2000, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_9fe324b27675330ea9dd26b61cb7c6bb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_afa2045c4159475c44120bdd75de3372 = $(`<div id="html_afa2045c4159475c44120bdd75de3372" style="width: 100.0%; height: 100.0%;"><b>NOVA LIMA</b><br>Risco: ALTO</div>`)[0];
+                popup_9fe324b27675330ea9dd26b61cb7c6bb.setContent(html_afa2045c4159475c44120bdd75de3372);
+            
+        
+
+        circle_4f330f3fc5ce95b9340261496e2f019b.bindPopup(popup_9fe324b27675330ea9dd26b61cb7c6bb)
+        ;
+
+        
+    
+    
+            circle_4f330f3fc5ce95b9340261496e2f019b.bindTooltip(
+                `<div>
+                     NOVA LIMA - Risco ALTO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_8f550807a082e72ea7a5543fb3f4b84c = L.circle(
+                [-20.3856, -43.5033],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2000, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_11f1a61f069433de288da52d72e0c9ea = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_7a832e0721eb35cedba4f3ac5041217e = $(`<div id="html_7a832e0721eb35cedba4f3ac5041217e" style="width: 100.0%; height: 100.0%;"><b>OURO PRETO</b><br>Risco: ALTO</div>`)[0];
+                popup_11f1a61f069433de288da52d72e0c9ea.setContent(html_7a832e0721eb35cedba4f3ac5041217e);
+            
+        
+
+        circle_8f550807a082e72ea7a5543fb3f4b84c.bindPopup(popup_11f1a61f069433de288da52d72e0c9ea)
+        ;
+
+        
+    
+    
+            circle_8f550807a082e72ea7a5543fb3f4b84c.bindTooltip(
+                `<div>
+                     OURO PRETO - Risco ALTO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_f4ec6441827b4a2729b88f6b9d98f596 = L.circle(
+                [-20.3778, -43.4175],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 2000, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_ad38ab4c465d3a99e4940b851f978ef1 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c70a7f61cff4bef48a1f1a1a6f527aff = $(`<div id="html_c70a7f61cff4bef48a1f1a1a6f527aff" style="width: 100.0%; height: 100.0%;"><b>MARIANA</b><br>Risco: ALTO</div>`)[0];
+                popup_ad38ab4c465d3a99e4940b851f978ef1.setContent(html_c70a7f61cff4bef48a1f1a1a6f527aff);
+            
+        
+
+        circle_f4ec6441827b4a2729b88f6b9d98f596.bindPopup(popup_ad38ab4c465d3a99e4940b851f978ef1)
+        ;
+
+        
+    
+    
+            circle_f4ec6441827b4a2729b88f6b9d98f596.bindTooltip(
+                `<div>
+                     MARIANA - Risco ALTO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_1b3e2dbcdfc4eab056daa71a9c0d49a9 = L.circle(
+                [-19.8833, -43.8014],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1500, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_016483f16d98688e405da834415ef4bc = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a5d1b861179018237ce49bbb2da4e764 = $(`<div id="html_a5d1b861179018237ce49bbb2da4e764" style="width: 100.0%; height: 100.0%;"><b>SABARÁ</b><br>Risco: MÉDIO</div>`)[0];
+                popup_016483f16d98688e405da834415ef4bc.setContent(html_a5d1b861179018237ce49bbb2da4e764);
+            
+        
+
+        circle_1b3e2dbcdfc4eab056daa71a9c0d49a9.bindPopup(popup_016483f16d98688e405da834415ef4bc)
+        ;
+
+        
+    
+    
+            circle_1b3e2dbcdfc4eab056daa71a9c0d49a9.bindTooltip(
+                `<div>
+                     SABARÁ - Risco MÉDIO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_9c51be9c0c62972619c63d86f478ed96 = L.circle(
+                [-19.6194, -43.2269],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1500, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_c3b1703976c09e05387ed0f5c1b73e04 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_07f5439215c57f15596192217847637d = $(`<div id="html_07f5439215c57f15596192217847637d" style="width: 100.0%; height: 100.0%;"><b>ITABIRA</b><br>Risco: MÉDIO</div>`)[0];
+                popup_c3b1703976c09e05387ed0f5c1b73e04.setContent(html_07f5439215c57f15596192217847637d);
+            
+        
+
+        circle_9c51be9c0c62972619c63d86f478ed96.bindPopup(popup_c3b1703976c09e05387ed0f5c1b73e04)
+        ;
+
+        
+    
+    
+            circle_9c51be9c0c62972619c63d86f478ed96.bindTooltip(
+                `<div>
+                     ITABIRA - Risco MÉDIO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_e9ce7200f0c6bb6527af20af8dc9ce87 = L.circle(
+                [-20.6597, -43.7858],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1500, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_b95a8cbf1fd467523f20293c613a8a56 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_93baf1a4e82fc53cc537be2945c009bf = $(`<div id="html_93baf1a4e82fc53cc537be2945c009bf" style="width: 100.0%; height: 100.0%;"><b>CONSELHEIRO LAFAIETE</b><br>Risco: MÉDIO</div>`)[0];
+                popup_b95a8cbf1fd467523f20293c613a8a56.setContent(html_93baf1a4e82fc53cc537be2945c009bf);
+            
+        
+
+        circle_e9ce7200f0c6bb6527af20af8dc9ce87.bindPopup(popup_b95a8cbf1fd467523f20293c613a8a56)
+        ;
+
+        
+    
+    
+            circle_e9ce7200f0c6bb6527af20af8dc9ce87.bindTooltip(
+                `<div>
+                     CONSELHEIRO LAFAIETE - Risco MÉDIO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_bf59032357d0a5763a841b7304dbc7b7 = L.circle(
+                [-21.2258, -43.7736],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1500, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_ea6388df38fac3752ae22a70d217f3c9 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_616832243a8003743350e4f209d69af4 = $(`<div id="html_616832243a8003743350e4f209d69af4" style="width: 100.0%; height: 100.0%;"><b>BARBACENA</b><br>Risco: MÉDIO</div>`)[0];
+                popup_ea6388df38fac3752ae22a70d217f3c9.setContent(html_616832243a8003743350e4f209d69af4);
+            
+        
+
+        circle_bf59032357d0a5763a841b7304dbc7b7.bindPopup(popup_ea6388df38fac3752ae22a70d217f3c9)
+        ;
+
+        
+    
+    
+            circle_bf59032357d0a5763a841b7304dbc7b7.bindTooltip(
+                `<div>
+                     BARBACENA - Risco MÉDIO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_c82b21e6461effbea27716e4f507667f = L.circle(
+                [-21.7642, -43.3467],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1500, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_8060e6b5dee2eca16c2fda3118487f5f = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f554b523cfc8980440a23d3994592eea = $(`<div id="html_f554b523cfc8980440a23d3994592eea" style="width: 100.0%; height: 100.0%;"><b>JUIZ DE FORA</b><br>Risco: MÉDIO</div>`)[0];
+                popup_8060e6b5dee2eca16c2fda3118487f5f.setContent(html_f554b523cfc8980440a23d3994592eea);
+            
+        
+
+        circle_c82b21e6461effbea27716e4f507667f.bindPopup(popup_8060e6b5dee2eca16c2fda3118487f5f)
+        ;
+
+        
+    
+    
+            circle_c82b21e6461effbea27716e4f507667f.bindTooltip(
+                `<div>
+                     JUIZ DE FORA - Risco MÉDIO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_277aaed0ef0554de2ac4bbd4b5d67978 = L.circle(
+                [-18.9186, -48.2772],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1000, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_2bf3941a60be42c0cfb7f243f5844e99 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_155667d4703f2998041f722e39ae5253 = $(`<div id="html_155667d4703f2998041f722e39ae5253" style="width: 100.0%; height: 100.0%;"><b>UBERLÂNDIA</b><br>Risco: BAIXO</div>`)[0];
+                popup_2bf3941a60be42c0cfb7f243f5844e99.setContent(html_155667d4703f2998041f722e39ae5253);
+            
+        
+
+        circle_277aaed0ef0554de2ac4bbd4b5d67978.bindPopup(popup_2bf3941a60be42c0cfb7f243f5844e99)
+        ;
+
+        
+    
+    
+            circle_277aaed0ef0554de2ac4bbd4b5d67978.bindTooltip(
+                `<div>
+                     UBERLÂNDIA - Risco BAIXO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_41959cea1f60ec8dfdefa85862070e58 = L.circle(
+                [-19.9317, -44.0536],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1500, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_afb46fc062646e7fa1f7d559045233e5 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_49867815fe2f6531e4be2dbad88a4096 = $(`<div id="html_49867815fe2f6531e4be2dbad88a4096" style="width: 100.0%; height: 100.0%;"><b>CONTAGEM</b><br>Risco: MÉDIO</div>`)[0];
+                popup_afb46fc062646e7fa1f7d559045233e5.setContent(html_49867815fe2f6531e4be2dbad88a4096);
+            
+        
+
+        circle_41959cea1f60ec8dfdefa85862070e58.bindPopup(popup_afb46fc062646e7fa1f7d559045233e5)
+        ;
+
+        
+    
+    
+            circle_41959cea1f60ec8dfdefa85862070e58.bindTooltip(
+                `<div>
+                     CONTAGEM - Risco MÉDIO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_bfe1d8ba86726669af02d06111124326 = L.circle(
+                [-19.9678, -44.1978],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1000, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_e8fd2ae87a2e79b480da6d52274bfc44 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8ea5097ea10ee909d167a79daec5be61 = $(`<div id="html_8ea5097ea10ee909d167a79daec5be61" style="width: 100.0%; height: 100.0%;"><b>BETIM</b><br>Risco: BAIXO</div>`)[0];
+                popup_e8fd2ae87a2e79b480da6d52274bfc44.setContent(html_8ea5097ea10ee909d167a79daec5be61);
+            
+        
+
+        circle_bfe1d8ba86726669af02d06111124326.bindPopup(popup_e8fd2ae87a2e79b480da6d52274bfc44)
+        ;
+
+        
+    
+    
+            circle_bfe1d8ba86726669af02d06111124326.bindTooltip(
+                `<div>
+                     BETIM - Risco BAIXO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_872ea5d457e54124e499906cbe214880 = L.circle(
+                [-16.7289, -43.8611],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1000, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_a4f196a3042e0ac94877e8a51f3a83e0 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_92742617598ffa1b22e5af8130b1b16f = $(`<div id="html_92742617598ffa1b22e5af8130b1b16f" style="width: 100.0%; height: 100.0%;"><b>MONTES CLAROS</b><br>Risco: BAIXO</div>`)[0];
+                popup_a4f196a3042e0ac94877e8a51f3a83e0.setContent(html_92742617598ffa1b22e5af8130b1b16f);
+            
+        
+
+        circle_872ea5d457e54124e499906cbe214880.bindPopup(popup_a4f196a3042e0ac94877e8a51f3a83e0)
+        ;
+
+        
+    
+    
+            circle_872ea5d457e54124e499906cbe214880.bindTooltip(
+                `<div>
+                     MONTES CLAROS - Risco BAIXO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_e8a351242491aafe93172a88bb679e33 = L.circle(
+                [-19.7667, -44.0867],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1000, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_cb562d5b32324bdc03b62286ad02a383 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_70adc0a74edcb1d51f0e7b3ea7989a6f = $(`<div id="html_70adc0a74edcb1d51f0e7b3ea7989a6f" style="width: 100.0%; height: 100.0%;"><b>RIBEIRÃO DAS NEVES</b><br>Risco: BAIXO</div>`)[0];
+                popup_cb562d5b32324bdc03b62286ad02a383.setContent(html_70adc0a74edcb1d51f0e7b3ea7989a6f);
+            
+        
+
+        circle_e8a351242491aafe93172a88bb679e33.bindPopup(popup_cb562d5b32324bdc03b62286ad02a383)
+        ;
+
+        
+    
+    
+            circle_e8a351242491aafe93172a88bb679e33.bindTooltip(
+                `<div>
+                     RIBEIRÃO DAS NEVES - Risco BAIXO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_378c23869a03d2e79f79f6ae39054605 = L.circle(
+                [-19.7475, -47.9319],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1000, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_2bb6b56902f96e04bbb578d08c5816f7 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_4a38e0c5d1dc1ce96dad2c1d8d92cdb3 = $(`<div id="html_4a38e0c5d1dc1ce96dad2c1d8d92cdb3" style="width: 100.0%; height: 100.0%;"><b>UBERABA</b><br>Risco: BAIXO</div>`)[0];
+                popup_2bb6b56902f96e04bbb578d08c5816f7.setContent(html_4a38e0c5d1dc1ce96dad2c1d8d92cdb3);
+            
+        
+
+        circle_378c23869a03d2e79f79f6ae39054605.bindPopup(popup_2bb6b56902f96e04bbb578d08c5816f7)
+        ;
+
+        
+    
+    
+            circle_378c23869a03d2e79f79f6ae39054605.bindTooltip(
+                `<div>
+                     UBERABA - Risco BAIXO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_8fce7e5a8167e81247b9236f524577b2 = L.circle(
+                [-18.8508, -41.9494],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1500, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_00eada56dda1a4822394a56d34714546 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_42c5665ccae45124c282bd4ed37fa0b6 = $(`<div id="html_42c5665ccae45124c282bd4ed37fa0b6" style="width: 100.0%; height: 100.0%;"><b>GOVERNADOR VALADARES</b><br>Risco: MÉDIO</div>`)[0];
+                popup_00eada56dda1a4822394a56d34714546.setContent(html_42c5665ccae45124c282bd4ed37fa0b6);
+            
+        
+
+        circle_8fce7e5a8167e81247b9236f524577b2.bindPopup(popup_00eada56dda1a4822394a56d34714546)
+        ;
+
+        
+    
+    
+            circle_8fce7e5a8167e81247b9236f524577b2.bindTooltip(
+                `<div>
+                     GOVERNADOR VALADARES - Risco MÉDIO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_b4c3340a50499b1cc7180111435d3c9a = L.circle(
+                [-19.4681, -42.5364],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1500, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_61a08d45914fc31c838892a952ce4999 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_ba74b60bdd95c202a6c5120f9c717f23 = $(`<div id="html_ba74b60bdd95c202a6c5120f9c717f23" style="width: 100.0%; height: 100.0%;"><b>IPATINGA</b><br>Risco: MÉDIO</div>`)[0];
+                popup_61a08d45914fc31c838892a952ce4999.setContent(html_ba74b60bdd95c202a6c5120f9c717f23);
+            
+        
+
+        circle_b4c3340a50499b1cc7180111435d3c9a.bindPopup(popup_61a08d45914fc31c838892a952ce4999)
+        ;
+
+        
+    
+    
+            circle_b4c3340a50499b1cc7180111435d3c9a.bindTooltip(
+                `<div>
+                     IPATINGA - Risco MÉDIO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_5f0a9a2a7c50f41725e4614d8dd50f92 = L.circle(
+                [-17.8631, -41.5056],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1000, "stroke": true, "weight": 2}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+        var popup_af4fe6e7b6dc7837db57efb958848312 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_241c3ab06bd3fd912c7f779afa6fed49 = $(`<div id="html_241c3ab06bd3fd912c7f779afa6fed49" style="width: 100.0%; height: 100.0%;"><b>TEÓFILO OTONI</b><br>Risco: BAIXO</div>`)[0];
+                popup_af4fe6e7b6dc7837db57efb958848312.setContent(html_241c3ab06bd3fd912c7f779afa6fed49);
+            
+        
+
+        circle_5f0a9a2a7c50f41725e4614d8dd50f92.bindPopup(popup_af4fe6e7b6dc7837db57efb958848312)
+        ;
+
+        
+    
+    
+            circle_5f0a9a2a7c50f41725e4614d8dd50f92.bindTooltip(
+                `<div>
+                     TEÓFILO OTONI - Risco BAIXO
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var heat_map_2a8483e8bb8f801599f3f9cc735ce23a = L.heatLayer(
+                [[-15.75166666, -41.45777777, 7.5407], [-16.16666666, -40.68777777, 1.8911000000000002], [-16.84888888, -42.03527777, 3.08], [-19.60583333, -46.94972221, 10.183200000000001], [-20.0311111, -46.00888888, 6.97], [-21.22833332, -43.76777777, 11.6876], [-19.97999999, -43.95861111, 11.9955], [-19.88388888, -43.96944443, 8.5402], [-19.93388888, -43.95222222, 9.1547], [-15.52416666, -46.43555555, 8.94], [-19.53916666, -49.51805554, 5.590700000000001], [-17.70555555, -42.38916666, 9.320599999999999], [-19.73583333, -42.13722221, 6.0925], [-19.98583333, -48.15166666, 5.7254], [-21.54666666, -43.26111111, 4.1114], [-18.74777777, -44.45388888, 6.6948], [-18.231052, -43.648269, 13.5925], [-20.17333332, -44.87499999, 7.96], [-19.48194443, -45.59388888, 7.2109000000000005], [-14.91222222, -42.80861111, 5.6536], [-19.88527777, -44.41694443, 7.535], [-20.455, -45.45388888, 8.7814], [-18.83027777, -41.97694443, 1.9824000000000002], [-17.56138888, -47.19916666, 9.9701], [-20.03138888, -44.01111111, 11.988199999999999], [-18.95277777, -49.52499999, 5.4008], [-15.44805555, -44.36638888, 4.68], [-17.78444444, -46.11944443, 8.7705], [-21.76999999, -43.36444444, 9.3688], [-21.68083332, -45.94444444, 9.69], [-20.26333333, -42.18277777, 8.194700000000001], [-18.78055554, -40.98638888, 2.5491], [-22.31444444, -45.37305554, 12.814300000000001], [-15.08583333, -44.01611111, 4.54], [-14.40833333, -44.40416666, 5.1952], [-22.86166666, -46.04333333, 15.448900000000002], [-16.68638888, -43.84388888, 6.4587], [-21.105, -42.37583332, 2.8279], [-15.80277777, -43.29694444, 5.32], [-20.715, -44.86444444, 10.25], [-20.55666666, -43.75611111, 10.482000000000001], [-17.24444444, -46.88166666, 7.05], [-22.39583333, -44.96194444, 10.171], [-20.74527777, -46.63388888, 7.817], [-18.52055554, -46.44055555, 9.5], [-18.99666666, -46.98583333, 9.7811], [-17.258064, -44.835556, 5.0532], [-19.23249999, -44.96416666, 7.05], [-15.72305554, -42.43583333, 8.500599999999999], [-19.87527777, -47.43416666, 9.1312], [-16.16027777, -42.31027777, 4.8713999999999995], [-21.10638888, -44.25083333, 9.2988], [-17.79888888, -40.25, 2.1197], [-19.45527777, -44.17333332, 7.19], [-17.89277777, -41.51555555, 4.6717], [-19.57388888, -42.62249999, 4.934200000000001], [-18.20083333, -45.45972222, 9.3101], [-19.71, -47.96194444, 7.78], [-18.91694443, -48.25555555, 8.7477], [-16.55416666, -46.88194443, 6.4085], [-21.56638888, -45.40416666, 9.4978], [-20.7625, -42.86388888, 6.9764]],
+                {
+  "minOpacity": 0.5,
+  "maxZoom": 1,
+  "radius": 20,
+  "blur": 15,
+}
+            );
+        
+    
+            heat_map_2a8483e8bb8f801599f3f9cc735ce23a.addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+        
+    
+            var layer_control_75c403db1ea6077a2271ce029b381256_layers = {
+                base_layers : {
+                    "openstreetmap" : tile_layer_8fa0ed3934c98240b72f603676273c63,
+                    "Terreno" : tile_layer_f6d1b73b8bf417fedcf696019cf5e352,
+                    "Preto e Branco" : tile_layer_1b7cbcbc164bf3d12ef77073d5062aa4,
+                    "CartoDB" : tile_layer_b16a747c4ffcb0a1358d33ffa5ae28eb,
+                },
+                overlays :  {
+                    "Esta\u00e7\u00f5es INMET" : marker_cluster_d6e1f54600324b6a9f2daccd3c562cda,
+                    "Densidade de Esta\u00e7\u00f5es" : heat_map_2a8483e8bb8f801599f3f9cc735ce23a,
+                },
+            };
+            let layer_control_75c403db1ea6077a2271ce029b381256 = L.control.layers(
+                layer_control_75c403db1ea6077a2271ce029b381256_layers.base_layers,
+                layer_control_75c403db1ea6077a2271ce029b381256_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": true,
+  "autoZIndex": true,
+}
+            ).addTo(map_ecd7b2c2dee3cb762d2840f9cf6ee4f7);
+
+        
+</script>
+</html>
