@@ -1,0 +1,32 @@
+[general]
+name=LHASA MG
+qgisMinimumVersion=3.16
+description=Análise de Risco de Deslizamento para Minas Gerais usando dados do INMET
+version=2.2
+author=NASA/LHASA Project
+email=contato@projeto.gov.br
+
+about=Este plugin implementa análises de risco de deslizamento para Minas Gerais, 
+    integrando dados de suscetibilidade com informações meteorológicas da API do INMET.
+    
+    Funcionalidades:
+    - Integração com API do INMET para dados meteorológicos
+    - Análise de risco baseada em suscetibilidade e precipitação
+    - Interface gráfica integrada ao QGIS
+    - Suporte a análises históricas e em tempo real
+
+tracker=https://github.com/projeto/lhasa-mg/issues
+repository=https://github.com/projeto/lhasa-mg
+hasProcessingProvider=yes
+
+tags=risco,deslizamento,meteorologia,inmet,minas gerais,análise espacial
+
+homepage=https://projeto.gov.br/lhasa-mg
+category=Analysis
+icon=icon.png
+experimental=False
+deprecated=False
+
+changelog=
+    2.2 - Migração para QGIS e integração com API INMET
+    2.1 - Versão original para ArcGIS
