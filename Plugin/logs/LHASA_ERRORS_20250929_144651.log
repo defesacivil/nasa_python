@@ -1,0 +1,4 @@
+29/09/2025 14:46:51 | ERROR    | log_error            | [TEST_ERROR] Erro simulado para teste
+29/09/2025 14:46:51 | ERROR    | log_error            | Exceção: Erro simulado para teste
+29/09/2025 14:46:52 | ERROR    | log_error            | [API_ERROR] Simulação de erro de API
+29/09/2025 14:46:52 | ERROR    | log_error            | Exceção: Timeout na conexão

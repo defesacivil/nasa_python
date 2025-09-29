@@ -1,0 +1,162 @@
+{
+  "summary": {
+    "session_id": "20250929_144651",
+    "start_time": "2025-09-29T14:46:51.600034",
+    "total_duration_seconds": 0.3161616325378418,
+    "total_events": 14,
+    "error_count": 1,
+    "warning_count": 1,
+    "log_files": [
+      "LHASA_MG_20250929_144651.log",
+      "LHASA_ERRORS_20250929_144651.log"
+    ]
+  },
+  "events": [
+    {
+      "timestamp": "2025-09-29T14:46:51.604285",
+      "event_type": "TEST_START",
+      "message": "Iniciando teste do sistema de logging",
+      "data": {},
+      "session_id": "20250929_144651"
+    },
+    {
+      "timestamp": "2025-09-29T14:46:51.604474",
+      "warning_type": "TEST_WARNING",
+      "message": "Este é um aviso de teste",
+      "data": {},
+      "session_id": "20250929_144651"
+    },
+    {
+      "timestamp": "2025-09-29T14:46:51.704848",
+      "operation": "TEST_OPERATION",
+      "duration_seconds": 0.10030460357666016,
+      "details": {
+        "registros_processados": 100,
+        "memoria_utilizada": "50MB"
+      },
+      "session_id": "20250929_144651"
+    },
+    {
+      "timestamp": "2025-09-29T14:46:51.705397",
+      "validation_type": "TEST_VALIDATION",
+      "status": "PASS",
+      "message": "Dados validados com sucesso",
+      "data_summary": {
+        "dados_validados": 50,
+        "erros_encontrados": 0
+      },
+      "session_id": "20250929_144651"
+    },
+    {
+      "timestamp": "2025-09-29T14:46:51.705454",
+      "api_name": "TEST_API",
+      "endpoint": "https://api.exemplo.com/test",
+      "method": "GET",
+      "status_code": 200,
+      "response_time_seconds": 0.5,
+      "data_size_bytes": 1024,
+      "session_id": "20250929_144651"
+    },
+    {
+      "timestamp": "2025-09-29T14:46:51.705495",
+      "operation": "TEST_GEOPROCESSING",
+      "input_features": 100,
+      "output_features": 50,
+      "processing_time_seconds": 1.2,
+      "success": true,
+      "session_id": "20250929_144651"
+    },
+    {
+      "timestamp": "2025-09-29T14:46:51.705620",
+      "event_type": "CONTEXT_START",
+      "message": "Iniciando contexto: TEST_CONTEXT",
+      "data": {
+        "context": "TEST_CONTEXT",
+        "description": "Testando context manager"
+      },
+      "session_id": "20250929_144651"
+    },
+    {
+      "timestamp": "2025-09-29T14:46:51.755895",
+      "event_type": "CONTEXT_TEST",
+      "message": "Dentro do context manager",
+      "data": {},
+      "session_id": "20250929_144651"
+    },
+    {
+      "timestamp": "2025-09-29T14:46:51.756053",
+      "event_type": "CONTEXT_END",
+      "message": "Contexto TEST_CONTEXT concluído com sucesso",
+      "data": {
+        "context": "TEST_CONTEXT",
+        "duration": 0.05043315887451172,
+        "success": true
+      },
+      "session_id": "20250929_144651"
+    },
+    {
+      "timestamp": "2025-09-29T14:46:51.756116",
+      "event_type": "FUNCTION_START",
+      "message": "Iniciando função funcao_teste",
+      "data": {
+        "function": "funcao_teste",
+        "args_count": 0,
+        "kwargs_count": 0
+      },
+      "session_id": "20250929_144651"
+    },
+    {
+      "timestamp": "2025-09-29T14:46:51.806427",
+      "event_type": "FUNCTION_END",
+      "message": "Função funcao_teste concluída com sucesso",
+      "data": {
+        "function": "funcao_teste",
+        "duration": 0.05030655860900879,
+        "success": true
+      },
+      "session_id": "20250929_144651"
+    },
+    {
+      "timestamp": "2025-09-29T14:46:51.806576",
+      "event_type": "ALGORITHM_START",
+      "message": "Iniciando TEST_ALGORITHM",
+      "data": {
+        "algorithm": "TEST_ALGORITHM",
+        "parameters": {
+          "tipo": "teste",
+          "parametros": {
+            "param1": "valor1"
+          }
+        },
+        "python_version": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+        "platform": "win32"
+      },
+      "session_id": "20250929_144651"
+    },
+    {
+      "timestamp": "2025-09-29T14:46:51.906801",
+      "event_type": "ALGORITHM_END",
+      "message": "Finalizando TEST_ALGORITHM - SUCCESS",
+      "data": {
+        "algorithm": "TEST_ALGORITHM",
+        "success": true,
+        "results": {
+          "resultado": "sucesso",
+          "tempo_execucao": 0.1
+        }
+      },
+      "session_id": "20250929_144651"
+    },
+    {
+      "timestamp": "2025-09-29T14:46:51.906947",
+      "error_type": "TEST_ERROR",
+      "message": "Erro simulado para teste",
+      "exception": "Erro simulado para teste",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\x24679188\\Documents\\Github\\Nasa\\nasa_python\\Plugin\\test_logging_simple.py\", line 99, in test_logging_system\n    raise ValueError(\"Erro simulado para teste\")\nValueError: Erro simulado para teste\n",
+      "context": {
+        "contexto": "teste_de_logging"
+      },
+      "session_id": "20250929_144651"
+    }
+  ]
+}

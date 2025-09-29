@@ -1,0 +1,20 @@
+29/09/2025 14:46:51 | INFO     | log_event            | [TEST_START] Iniciando teste do sistema de logging
+29/09/2025 14:46:51 | WARNING  | log_warning          | [TEST_WARNING] Este é um aviso de teste
+29/09/2025 14:46:51 | INFO     | log_performance      | [PERFORMANCE] TEST_OPERATION: 0.100s
+29/09/2025 14:46:51 | INFO     | log_data_validation  | [VALIDATION] TEST_VALIDATION: Dados validados com sucesso
+29/09/2025 14:46:51 | INFO     | log_api_call         | [API] TEST_API GET https://api.exemplo.com/test - Status: 200 - Tempo: 0.500s
+29/09/2025 14:46:51 | INFO     | log_geoprocessing    | [GEOPROCESSING] TEST_GEOPROCESSING - SUCCESS - Input: 100, Output: 50, Time: 1.200s
+29/09/2025 14:46:51 | INFO     | log_event            | [CONTEXT_START] Iniciando contexto: TEST_CONTEXT
+29/09/2025 14:46:51 | INFO     | log_event            | [CONTEXT_TEST] Dentro do context manager
+29/09/2025 14:46:51 | INFO     | log_event            | [CONTEXT_END] Contexto TEST_CONTEXT concluído com sucesso
+29/09/2025 14:46:51 | INFO     | log_event            | [FUNCTION_START] Iniciando função funcao_teste
+29/09/2025 14:46:51 | INFO     | log_event            | [FUNCTION_END] Função funcao_teste concluída com sucesso
+29/09/2025 14:46:51 | INFO     | log_event            | [ALGORITHM_START] Iniciando TEST_ALGORITHM
+29/09/2025 14:46:51 | INFO     | log_event            | [ALGORITHM_END] Finalizando TEST_ALGORITHM - SUCCESS
+29/09/2025 14:46:51 | ERROR    | log_error            | [TEST_ERROR] Erro simulado para teste
+29/09/2025 14:46:51 | ERROR    | log_error            | Exceção: Erro simulado para teste
+29/09/2025 14:46:51 | INFO     | save_session_log     | Log da sessão salvo em: logs\LHASA_SESSION_20250929_144651.json
+29/09/2025 14:46:51 | INFO     | log_event            | [DATA_LOADING] Simulando carregamento de dados do INMET
+29/09/2025 14:46:52 | INFO     | log_performance      | [PERFORMANCE] DATA_PROCESSING: 0.200s
+29/09/2025 14:46:52 | ERROR    | log_error            | [API_ERROR] Simulação de erro de API
+29/09/2025 14:46:52 | ERROR    | log_error            | Exceção: Timeout na conexão
