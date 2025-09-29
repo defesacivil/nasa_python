@@ -73,7 +73,7 @@ A camada de saída conterá polígonos classificados por nível de perigo:
 O plugin utiliza automaticamente a API pública do INMET:
 
 - **Estações**: `https://apitempo.inmet.gov.br/estacoes/T`
-- **Dados**: `https://apitempo.inmet.gov.br/estacao/{data_inicio}/{data_fim}/{codigo_estacao}`
+- **Dados**: `https://apitempo.inmet.gov.br/token/estacao/{data_inicio}/{data_fim}/{codigo_estacao}/{token}`
 
 ### Limitações da API
 

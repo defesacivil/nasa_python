@@ -20,8 +20,12 @@ from qgis.core import (
     QgsProcessingParameterString,
     QgsProcessingParameterNumber,
     QgsField,
+    QgsFields,
     QgsFeature,
     QgsVectorLayer,
+    QgsFeatureSink,
+    QgsProcessingUtils,
+    QgsWkbTypes,
     edit
 )
 import processing
@@ -148,10 +152,15 @@ class LhasaMgAnalysis(QgsProcessingAlgorithm):
         chuva_por_estacao = self.buscarDadosInmet(camada_estacoes, campo_codigo, data_analise, feedback)
         feedback.pushInfo(f"Dados encontrados para {len(chuva_por_estacao)} estações.")
 
-        # Verificação CRÍTICA: Se não encontrou dados, para o algoritmo
+        # Verificação: Se não conseguiu processar nenhuma estação, para o algoritmo
         if not chuva_por_estacao:
-            feedback.pushInfo("AVISO: Nenhum dado de chuva foi encontrado para a data selecionada. O algoritmo será interrompido.")
+            feedback.pushInfo("AVISO: Não foi possível processar nenhuma estação. Verifique se há estações na camada de entrada.")
             return {}  # Retorna dicionário vazio para parar a execução
+        
+        # Contar estações com dados válidos (mesmo que 0.0)
+        total_chuva = sum(chuva_por_estacao.values())
+        estacoes_com_chuva = sum(1 for v in chuva_por_estacao.values() if v > 0.0)
+        feedback.pushInfo(f"Processadas {len(chuva_por_estacao)} estações. {estacoes_com_chuva} com chuva > 0. Total acumulado: {total_chuva:.2f} mm")
 
         # ETAPA 2: Adicionar dados de chuva à camada de pontos
         feedback.pushInfo("Adicionando dados de chuva à camada de pontos...")
@@ -190,7 +199,7 @@ class LhasaMgAnalysis(QgsProcessingAlgorithm):
                 if not codigo_estacao:
                     continue
 
-                url_dados = f"https://apitempo.inmet.gov.br/estacao/{data_analise}/{data_analise}/{codigo_estacao}"
+                url_dados = f"https://apitempo.inmet.gov.br/token/estacao/{data_analise}/{data_analise}/{codigo_estacao}/Q2MyWEhWUmxwalRSN0Z6ZXVOdmhBTTZYZHo3MEhlMTA=Cc2XHVRlpjTR7FzeuNvhAM6Xdz70He10"
                 feedback.pushInfo(f"--- Tentando URL: {url_dados}")
                 response = requests.get(url_dados, timeout=20)
                 feedback.pushInfo(f"  - Resposta para {codigo_estacao}: Código {response.status_code}")
@@ -207,6 +216,23 @@ class LhasaMgAnalysis(QgsProcessingAlgorithm):
                                 except (ValueError, TypeError):
                                     continue
                         chuva_por_estacao[codigo_estacao] = chuva_acumulada_24h
+                        feedback.pushInfo(f"  - Estação {codigo_estacao}: {chuva_acumulada_24h:.2f} mm")
+                    else:
+                        feedback.pushInfo(f"  - Estação {codigo_estacao}: Resposta vazia (0.0 mm)")
+                        chuva_por_estacao[codigo_estacao] = 0.0
+                elif response.status_code == 204:
+                    # Código 204: No Content - dados válidos mas sem conteúdo (chuva = 0)
+                    feedback.pushInfo(f"  - Estação {codigo_estacao}: Sem dados disponíveis (0.0 mm)")
+                    chuva_por_estacao[codigo_estacao] = 0.0
+                elif response.status_code == 404:
+                    # Código 404: Estação não encontrada
+                    feedback.pushWarning(f"  - Estação {codigo_estacao}: Estação não encontrada na API")
+                elif response.status_code == 401:
+                    # Código 401: Token inválido
+                    feedback.pushWarning(f"  - Estação {codigo_estacao}: Token de API inválido")
+                else:
+                    # Outros códigos de erro
+                    feedback.pushWarning(f"  - Estação {codigo_estacao}: Erro HTTP {response.status_code}")
             except Exception as e:
                 # CORREÇÃO DO BUG: Usando pushWarning que é um método válido
                 feedback.pushWarning(f"  - Ocorreu um erro ao processar a estação {codigo_estacao}: {str(e)}")
@@ -216,31 +242,59 @@ class LhasaMgAnalysis(QgsProcessingAlgorithm):
 
         return chuva_por_estacao
 
-    def adicionarDadosChuva(self, camada_estacoes, chuva_por_estacao, campo_codigo, feedback):
+    def adicionarDadosChuva(self, camada_estacoes, chuva_dados, campo_codigo, feedback):
         """
-        Adiciona dados de chuva à camada de pontos das estações.
-        Retorna uma nova camada com os dados de chuva incorporados.
+        Cria uma nova camada em memória com os dados de chuva adicionados.
+        Esta abordagem é mais estável do que clonar e editar uma camada baseada em CSV.
         """
-        # Criar uma cópia em memória da camada de estações
-        estacoes_com_chuva = camada_estacoes.clone()
-        provider = estacoes_com_chuva.dataProvider()
+        # Pega os campos (colunas) da camada de entrada original
+        campos_originais = camada_estacoes.fields()
         
-        # Adicionar novos campos para os dados de chuva
-        provider.addAttributes([
-            QgsField("CHUVA_24H", QVariant.Double)
-        ])
-        estacoes_com_chuva.updateFields()
+        # Cria uma nova lista de campos, adicionando o nosso novo campo de chuva
+        novos_campos = QgsFields()
+        for campo in campos_originais:
+            novos_campos.append(campo)
+        novos_campos.append(QgsField("CHUVA_24H", QVariant.Double))
+
+        # Cria uma nova camada em memória
+        camada_memoria = QgsVectorLayer(
+            f"{QgsWkbTypes.displayString(camada_estacoes.wkbType())}?crs={camada_estacoes.crs().authid()}",
+            "estacoes_com_chuva",
+            "memory"
+        )
+        provider = camada_memoria.dataProvider()
+        provider.addAttributes(novos_campos.toList())
+        camada_memoria.updateFields()
+
+        # Itera sobre a camada original para criar as novas feições
+        novas_features = []
+        for feature_original in camada_estacoes.getFeatures():
+            if feedback.isCanceled():
+                break
+            
+            # Cria uma nova feição
+            nova_feature = QgsFeature()
+            nova_feature.setGeometry(feature_original.geometry())
+            nova_feature.setFields(novos_campos)
+            
+            # Copia os atributos da feição original para a nova
+            for i in range(len(campos_originais)):
+                nova_feature.setAttribute(i, feature_original.attribute(i))
+            
+            # Obtém e adiciona o dado de chuva
+            codigo = str(feature_original[campo_codigo]).upper().strip()
+            chuva = chuva_dados.get(codigo, 0.0)
+            nova_feature.setAttribute("CHUVA_24H", chuva)
+            
+            # Adiciona a nova feição à lista
+            novas_features.append(nova_feature)
+
+        # Adiciona todas as feições de uma vez à camada
+        provider.addFeatures(novas_features)
+        camada_memoria.updateExtents()
         
-        # Atualizar cada feição com o valor da chuva
-        with edit(estacoes_com_chuva):
-            for feature in estacoes_com_chuva.getFeatures():
-                codigo = feature[campo_codigo]
-                chuva = chuva_por_estacao.get(codigo, 0.0)  # Usa 0.0 se não encontrou dados
-                feature['CHUVA_24H'] = chuva
-                estacoes_com_chuva.updateFeature(feature)
-        
-        feedback.pushInfo(f"Adicionados dados de chuva para {len(chuva_por_estacao)} estações")
-        return estacoes_com_chuva
+        feedback.pushInfo(f"Criada nova camada em memória com dados de chuva para {len(chuva_dados)} estações")
+        return camada_memoria
 
     def executarAnaliseRisco(self, zonas_pluviometricas, camada_suscetibilidade, parameters, output_path, context, feedback):
         """Calcula o risco de deslizamento usando limiares ajustáveis"""

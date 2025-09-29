@@ -14,7 +14,7 @@ Um "endpoint" é uma URL específica que fornece um tipo de dado. Nós usamos du
 
 - **Listagem de Estações:** `https://apitempo.inmet.gov.br/estacoes/T`
   - **Função:** Retorna uma lista de **todas as estações automáticas** do Brasil com seus metadados (código, nome, latitude, longitude).
-- **Dados Horários por Estação:** `https://apitempo.inmet.gov.br/estacao/{data_inicio}/{data_fim}/{codigo_estacao}`
+- **Dados Horários por Estação:** `https://apitempo.inmet.gov.br/token/estacao/{data_inicio}/{data_fim}/{codigo_estacao}/{token}`
   - **Função:** Retorna os **dados meteorológicos horários** para uma única estação dentro de um intervalo de datas.
 
 ### Formato dos Dados

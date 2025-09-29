@@ -117,7 +117,7 @@ class AnaliseRiscoInmet(QgsProcessingAlgorithm):
         # Iterar sobre cada estação na camada de pontos
         for estacao in camada_estacoes.getFeatures():
             codigo_estacao = estacao[campo_codigo]
-            url_dados = f"https://apitempo.inmet.gov.br/estacao/{data_analise}/{data_analise}/{codigo_estacao}"
+            url_dados = f"https://apitempo.inmet.gov.br/token/estacao/{data_analise}/{data_analise}/{codigo_estacao}/YOUR_TOKEN_HERE"
             
             try:
                 response = requests.get(url_dados)

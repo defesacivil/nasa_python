@@ -45,7 +45,8 @@ import processing
 # 4. Adaptação da estrutura de dados para formato JSON do INMET
 # 5. Configuração para SRC SIRGAS 2000 (padrão brasileiro)
 INMET_STATIONS_URL = "https://apitempo.inmet.gov.br/estacoes/T"  # Lista todas as estações automáticas
-INMET_DATA_URL = "https://apitempo.inmet.gov.br/estacao/{data_inicio}/{data_fim}/{codigo_estacao}"  # Dados horários por estação
+INMET_DATA_URL = "https://apitempo.inmet.gov.br/token/estacao/{data_inicio}/{data_fim}/{codigo_estacao}/{token}"  # Dados horários por estação com token
+INMET_TOKEN = "YOUR_TOKEN_HERE"  # Token de acesso à API INMET - substitua pelo token real
 
 # WORKSPACE PATH
 PROJECT_PATH = os.path.dirname(__file__)
@@ -586,7 +587,7 @@ def loadInmetStations():
         log.error(f"Erro ao decodificar JSON das estações: {e}")
         return []
 
-def loadInmetStationData(codigo_estacao, data_inicio, data_fim):
+def loadInmetStationData(codigo_estacao, data_inicio, data_fim, token):
     """Busca dados horários de uma estação específica do INMET"""
     try:
         # Rate limiting - pequeno intervalo entre requisições
@@ -595,7 +596,8 @@ def loadInmetStationData(codigo_estacao, data_inicio, data_fim):
         url = INMET_DATA_URL.format(
             data_inicio=data_inicio,
             data_fim=data_fim,
-            codigo_estacao=codigo_estacao
+            codigo_estacao=codigo_estacao,
+            token=token
         )
         
         log.info(f"Buscando dados da estação {codigo_estacao}: {url}")
@@ -640,7 +642,7 @@ def loadPluviometricData():
     for i, station in enumerate(stations[:50]):  # Limitar a 50 estações para teste
         codigo_estacao = station.get('CD_ESTACAO')
         if codigo_estacao:
-            station_data = loadInmetStationData(codigo_estacao, data_inicio, data_fim)
+            station_data = loadInmetStationData(codigo_estacao, data_inicio, data_fim, INMET_TOKEN)
             
             # Processar dados da estação
             if station_data:
@@ -1078,7 +1080,7 @@ class LhasaMgAnalysis(QgsProcessingAlgorithm):
             if station.get('SG_ESTADO') == 'MG':  # Filtrar apenas estações de MG
                 codigo_estacao = station.get('CD_ESTACAO')
                 if codigo_estacao and count < 20:  # Limitar para teste
-                    station_data = loadInmetStationData(codigo_estacao, data_inicio, data_fim)
+                    station_data = loadInmetStationData(codigo_estacao, data_inicio, data_fim, INMET_TOKEN)
                     
                     if station_data:
                         for record in station_data:
