@@ -118,3 +118,8 @@ except Exception as e:
 - ✅ **Validação Robusta**: Verificação de camadas de entrada
 
 As correções mantêm a codificação original e resolvem o problema de carregamento de camadas no QGIS.
+
+
+
+
+

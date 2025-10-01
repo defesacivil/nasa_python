@@ -229,3 +229,5 @@ O sistema de logging LHASA MG está **100% funcional** e fornece:
 
 O sistema está pronto para uso em produção e fornece visibilidade completa da execução do algoritmo LHASA MG.
 
+
+

@@ -256,3 +256,8 @@ if __name__ == "__main__":
     else:
         print("\n=== TESTE FALHOU ===")
         print("Verifique se o arquivo original existe e as correções foram aplicadas")
+
+
+
+
+

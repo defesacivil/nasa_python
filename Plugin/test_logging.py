@@ -202,3 +202,5 @@ if __name__ == "__main__":
     print("2. Execute: python exemplo_logging.py")
     print("3. Consulte: LOGGING_GUIDE.md")
 
+
+

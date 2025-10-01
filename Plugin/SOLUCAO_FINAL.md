@@ -152,3 +152,8 @@ O problema foi resolvido criando um novo algoritmo que segue exatamente os requi
 - ✅ Segue o fluxo correto especificado nos requisitos
 
 O novo algoritmo está pronto para uso e deve resolver o problema de geração do mapa final no QGIS.
+
+
+
+
+

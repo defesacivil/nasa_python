@@ -575,3 +575,5 @@ if __name__ == "__main__":
     summary = logger.get_session_summary()
     print(f"Resumo da sessão: {summary}")
 
+
+

@@ -1,0 +1,365 @@
+# -*- coding: utf-8 -*-
+# ---------------------------------------------------------------------------
+# IPP - Instituto PROJETA MINAS | MINAS GERIAS | MG
+# LHASA MG | NASA | Nowcast
+# Processo de análise de riscos de deslizamento
+# V 2.0
+# ---------------------------------------------------------------------------
+# =======================================================================
+# BLOCO 1: PACOTES E IMPORTAÇÕES
+# =======================================================================
+
+import sys, os, shutil, copy, glob
+import logging
+import urllib3
+import socket
+import json, csv
+import os
+from unidecode import unidecode
+import arcpy
+from datetime import datetime
+log = logging.getLogger(__name__)
+
+# =======================================================================
+# BLOCO 2: CONFIGURAÇÕES GLOBAIS E CONSTANTES (ADAPTADO PARA MG E INMET)
+# =======================================================================
+
+# EXTERNAL SERVICES ENDPOINTS
+INMET_DATA_URL = "https://apitempo.inmet.gov.br/token/estacao/{data_inicio}/{data_fim}/{codigo_estacao}/{token}"
+INMET_TOKEN = "Q2MyWEhWUmxwalRSN0Z6ZXVOdmhBTTZYZHo3MEhlMTA=Cc2XHVRlpjTR7FzeuNvhAM6Xdz70He10" # token de acesso à API INMET / CINDEC
+
+# WORKSPACE PATH
+PROJECT_PATH = os.getcwd() # Usa o diretório atual do notebook \ # PROJECT_PATH = os.getcwd() print(PROJECT_PATH)
+WKSP = os.path.join(PROJECT_PATH, "data")
+GDB_WKSP_OUT = os.path.join(WKSP, "MG-HIDRO-DATA.gdb") # Adaptado para MG
+SDE_WKSP_OUT = os.path.join(PROJECT_PATH, "data\\seu_servidor@seu_banco.sde\\nome_da_feature_class_de_saida") # !! AJUSTE ESTE CAMINHO !!
+HISTORIC_DATA_PATH = os.path.join(WKSP, "history")
+
+# LOGGING SETUP
+LOG_FILE = os.path.join(PROJECT_PATH, "logs", "LHASA_MG.log") # Adaptado para MG
+LOG_LEVEL = logging.DEBUG
+LOG_TO_FILE = True
+LOG_TO_CONSOLE = True
+LOG_SUFIX = "[LHASA-MG]" # Adaptado para MG
+
+# FLAGS
+OUTPUT_TO_SDE = True
+DATE_SEPARATOR = "/"
+
+# LAYER / TABLE DEFINITION (!! AJUSTE OS CAMINHOS PARA SEUS DADOS DE MG !!)
+LYR_IN_PZ = os.path.join(WKSP, "MG-HIDRO-DATA.gdb\\Camada_Estacoes_MG")
+LYR_IN_SZ = os.path.join(WKSP, "MG-HIDRO-DATA.gdb\\Camada_Suscetibilidade_MG")
+LYR_OUT_LHASA_NOW = os.path.join(GDB_WKSP_OUT, "MG_LHASA_AGORA")
+LYR_OUT_LHASA_HISTORICAL = os.path.join(GDB_WKSP_OUT, "MG_LHASA_HISTORICO")
+TBL_OUT_RAIN_NOW = os.path.join(GDB_WKSP_OUT, "MG_CHUVA_AGORA")
+TBL_OUT_RAIN_HISTORICAL = os.path.join(GDB_WKSP_OUT, "MG_CHUVA_HISTORICO")
+
+# SCRATCH/PROCESSING LAYERS
+LYR_PRC_VOLUME_CHUVA = ""
+LYR_PRC_A_AREAS_DE_RISCO = "%scratchworkspace%\\A_AREA_RISCO"
+LYR_PRC_B_VOLUME_VS_RISCO = "%scratchworkspace%\\B_VOLUME_X_RISCO"
+LYR_PRC_C_AREAS_PERIGO = "%scratchworkspace%\\C_AREAS_PERIGO"
+LYR_PRC_D_AREAS_PERIGO_DESLIZAMENTO = "%scratchworkspace%\\D_AREAS_PERIGO_DESLIZAMENTO"
+TBL_PRC_CHUVA_HISTORICA = "TB_CHUVA_HISTORICA"
+LYR_PRC_LHASA_HISTORICAL = "MG_LHASA_HISTORICO" # Adaptado para MG
+LYR_PRC_LHASA_NOW = "MG_LHASA_AGORA" # Adaptado para MG
+FLD_RISCO = "PERIGO"
+
+# FIELD DEFINITION (!! VERIFIQUE SE OS NOMES CORRESPONDEM AOS SEUS DADOS DE ENTRADA !!)
+LYR_PZ_FLDS = ["SHAPE@JSON", "CD_ESTACAO", "DC_NOME", "ENDERECO"] # Nomes de campos genéricos
+TBL_OUT_RAIN_NOW_FLDS = ["NM_CODIGO", "TX_ESTACAO", "DT_COLETA", "DATA", "HORA", "NM_M15", "NM_H01", "NM_H04", "NM_H24", "NM_H96"]
+TBL_OUT_RAIN_HISTORICAL_FLDS = ["NM_CODIGO", "TX_ESTACAO", "DT_COLETA", "DATA", "HORA", "NM_M15", "DH_M15", "NM_H01", "DH_H01", "NM_H04", "DH_H04", "NM_H24", "DH_H24", "NM_H96", "DH_H96"]
+LYR_LHASA_NOW_FLDS = ["SHAPE@JSON", "NM_CODIGO", "TX_ESTACAO", "TX_ENDERECO", "DT_COLETA", "NM_M15", "NM_H01", "NM_H02", "NM_H03", "NM_H04", "NM_H24", "NM_H96", "NM_MES"]
+LYR_LHASA_HISTORICAL_FLDS = ["SHAPE@JSON", "NM_CODIGO", "TX_ESTACAO", "DT_COLETA", "DATA", "HORA", "NM_M15", "DH_M15", "NM_H01", "DH_H01", "NM_H04", "DH_H04", "NM_H24", "DH_H24", "NM_H96", "DH_H96"]
+
+
+# =======================================================================
+# BLOCO 3: LEITURA DO CSV E CRIAÇÃO DO MAPA DE ESTAÇÕES
+# =======================================================================
+
+MAP_ESTACAO_PARA_CODIGO_INMET = {}
+try:
+    log.info("Iniciando a leitura do arquivo CSV de estações...")
+    
+    # Constrói o caminho completo para o arquivo CSV
+    csv_path = os.path.join(PROJECT_PATH, 'estacoes_mg_completo.csv')
+    
+    # Lê o arquivo usando a biblioteca pandas
+    df_stations = pd.read_csv(csv_path, sep=';', encoding='latin1', on_bad_lines='skip')
+    
+    # Verifica se as colunas necessárias ('DC_NOME', 'CD_ESTACAO') existem no arquivo
+    if 'DC_NOME' in df_stations.columns and 'CD_ESTACAO' in df_stations.columns:
+        
+        # Cria o dicionário que mapeia NOME DA ESTAÇÃO -> CÓDIGO DA ESTAÇÃO
+        # O nome da estação é convertido para maiúsculas para garantir a correspondência
+        MAP_ESTACAO_PARA_CODIGO_INMET = pd.Series(
+            df_stations.CD_ESTACAO.values, 
+            index=df_stations.DC_NOME.str.upper()
+        ).to_dict()
+        
+        log.info(f"Mapeamento de estações criado com sucesso para {len(MAP_ESTACAO_PARA_CODIGO_INMET)} estações.")
+        # Opcional: Imprime algumas estações para verificação
+        # print(list(MAP_ESTACAO_PARA_CODIGO_INMET.items())[:5]) 
+        
+    else:
+        log.error("As colunas 'DC_NOME' e/ou 'CD_ESTACAO' não foram encontradas no arquivo CSV.")
+
+except FileNotFoundError:
+    log.error(f"ERRO CRÍTICO: O arquivo '{csv_path}' não foi encontrado. O script não poderá consultar a API do INMET.")
+except Exception as e:
+    log.error(f"Ocorreu um erro inesperado ao processar o arquivo CSV: {e}")
+
+# =======================================================================
+# BLOCO 4: ESTRUTURAS DE DADOS E TEMPLATES
+# =======================================================================
+
+# Template para um item de Zona Pluviométrica (Estação)
+# Usado para armazenar os dados lidos da sua camada de mapa
+TPL_PZ_ITEM = {
+    "SHAPE": "",
+    "NM_CODIGO": 0,
+    "TX_ESTACAO": "",
+    "TX_ENDERECO": "",
+    "DT_COLETA": "",
+    "NM_M15": 0.0,
+    "NM_H01": 0.0,
+    "NM_H02": 0.0,
+    "NM_H03": 0.0,
+    "NM_H04": 0.0,
+    "NM_H24": 0.0,
+    "NM_H96": 0.0,
+    "NM_MES": 0.0
+}
+
+# Template para um item de dado histórico de chuva
+# (Usado na funcionalidade de análise histórica do script original)
+TPL_PH_ITEM = {
+    "NM_CODIGO": 0, "TX_ESTACAO": "", "DT_COLETA": "", "DATA": "", "HORA": "",
+    "NM_M15": 0.0, "DH_M15": "", "NM_H01": 0.0, "DH_H01": "", "NM_H04": 0.0, "DH_H04": "",
+    "NM_H24": 0.0, "DH_H24": "", "NM_H96": 0.0, "DH_H96": ""
+}
+
+# Inicializa as listas globais que serão preenchidas pelas funções
+log.info("Inicializando as estruturas de dados em memória (listas).")
+ARR_PZ = [] # Armazenará os dados das estações lidas da camada GIS
+ARR_PD = [] # Armazenará os dados de chuva coletados da API INMET
+
+
+# =======================================================================
+# BLOCO 5: DEFINIÇÃO DAS FUNÇÕES LOGICA DE MAPEAMENTO E ANÁLISE
+# =======================================================================
+
+def initialize():
+    """Configura o ambiente do ArcPy para a execução."""
+    try:
+        arcpy.SetLogHistory(False)
+        arcpy.env.overwriteOutput = True
+        arcpy.env.workspace = GDB_WKSP_OUT
+        arcpy.env.scratchWorkspace = "in_memory"
+        log.info("Ambiente ArcPy inicializado com sucesso.")
+    except Exception as e:
+        log.error(f"Falha ao inicializar o ambiente ArcPy: {e}")
+
+def loadPluviometricZones():
+    """
+    Lê a camada GIS de entrada (LYR_IN_PZ) e preenche a lista ARR_PZ 
+    com a geometria e os atributos de cada estação.
+    """
+    global ARR_PZ
+    del ARR_PZ[:]
+    
+    try:
+        log.info(f"Lendo a camada de Zonas Pluviométricas: {LYR_IN_PZ}")
+        if not arcpy.Exists(LYR_IN_PZ):
+            log.error(f"Camada de entrada LYR_IN_PZ não encontrada em: {LYR_IN_PZ}")
+            return
+
+        # Os nomes dos campos aqui (LYR_PZ_FLDS) devem corresponder exatamente
+        # aos nomes dos campos na sua camada de feições.
+        with arcpy.da.SearchCursor(LYR_IN_PZ, LYR_PZ_FLDS) as cursor:
+            for row in cursor:
+                PZ_ITEM = copy.deepcopy(TPL_PZ_ITEM)
+                PZ_ITEM["SHAPE"] = row[0]
+                PZ_ITEM["NM_CODIGO"] = int(row[1])
+                PZ_ITEM["TX_ESTACAO"] = unidecode(row[2].upper())
+                PZ_ITEM["TX_ENDERECO"] = unidecode(row[3].upper())
+                ARR_PZ.append(PZ_ITEM)
+        log.info(f"{len(ARR_PZ)} Zonas Pluviométricas (estações) carregadas da camada GIS.")
+    except Exception as e:
+        log.error(f"Erro ao carregar as Zonas Pluviométricas da camada GIS: {e}")
+
+
+def loadPluviometricData():
+    """
+    Carrega os dados de chuva do dia atual da API do INMET para as estações mapeadas.
+    """
+    global ARR_PD
+    del ARR_PD[:]
+    
+    log.info("Iniciando carga de dados da API INMET.")
+    hoje = datetime.now()
+    data_inicio = hoje.strftime('%Y-%m-%d')
+    data_fim = hoje.strftime('%Y-%m-%d')
+    
+    http = urllib3.PoolManager()
+    
+    for zona_pluviometrica in ARR_PZ:
+        nome_estacao = zona_pluviometrica["TX_ESTACAO"]
+        codigo_estacao = MAP_ESTACAO_PARA_CODIGO_INMET.get(nome_estacao)
+        
+        if not codigo_estacao:
+            log.warning(f"Estação '{nome_estacao}' não encontrada no mapeamento INMET. Pulando.")
+            continue
+
+        url_dados = INMET_DATA_URL.format(data_inicio, data_fim, codigo_estacao, token=INMET_TOKEN)
+        
+        try:
+            log.info(f"Buscando dados para a estação: {nome_estacao} ({codigo_estacao})")
+            resposta = http.request("GET", url_dados)
+
+            if resposta.status != 200:
+                log.error(f"Erro na API INMET para {codigo_estacao}. Status: {resposta.status}. Resposta: {resposta.data.decode('utf-8')}")
+                continue
+            
+            dados_estacao = json.loads(resposta.data.decode('utf-8'))
+            
+            if not dados_estacao:
+                log.info(f"Nenhum dado retornado para a estação {codigo_estacao} no período.")
+                continue
+
+            ultima_medicao = dados_estacao[-1]
+            chuva_ultima_hora = float(ultima_medicao.get("CHUVA") or 0.0)
+            
+            item_pd = {
+                "name": nome_estacao,
+                "read_at": f"{ultima_medicao['DT_MEDICAO']}T{ultima_medicao['HR_MEDICAO'][:2]}:00:00",
+                "data": {"h01": chuva_ultima_hora}
+            }
+            ARR_PD.append(item_pd)
+            log.info(f"Dados da estação {nome_estacao} processados. Chuva (1h): {chuva_ultima_hora}mm")
+
+        except Exception as e:
+            log.error(f"Falha ao processar a estação {nome_estacao}: {e}")
+
+    log.info(f"Carga de dados INMET finalizada. {len(ARR_PD)} estações com dados carregados.")
+
+
+def loadNowData():
+    """
+    Orquestra a carga de dados para o modo Nowcast, combinando dados
+    geográficos (ARR_PZ) com os dados de chuva da API (ARR_PD).
+    """
+    log.info("Iniciando processo de carga de dados Nowcast.")
+    loadPluviometricZones()
+    loadPluviometricData()
+    
+    # Criar a camada de saída e limpá-la
+    if arcpy.Exists(LYR_OUT_LHASA_NOW):
+        arcpy.management.DeleteRows(LYR_OUT_LHASA_NOW)
+    else:
+        # Se não existir, criar a partir de um template ou estrutura
+        log.error(f"A camada de saída {LYR_OUT_LHASA_NOW} não existe e precisa ser criada.")
+        return # Para a execução se a camada não existir
+        
+    with arcpy.da.InsertCursor(LYR_OUT_LHASA_NOW, LYR_LHASA_NOW_FLDS) as cursor:
+        for pz_item in ARR_PZ:
+            # Encontra o dado de chuva correspondente para esta estação
+            pd_item_match = next((item for item in ARR_PD if item["name"] == pz_item["TX_ESTACAO"]), None)
+            
+            if pd_item_match:
+                pz_item["DT_COLETA"] = datetime.strptime(pd_item_match['read_at'], "%Y-%m-%dT%H:%M:%S")
+                pz_item["NM_H01"] = pd_item_match['data']['h01']
+                # Outros acumulados (NM_H24, etc.) não são fornecidos diretamente pela API INMET
+                # e precisariam de cálculo adicional. Por enquanto, serão 0.
+                
+                row_to_insert = (
+                    pz_item["SHAPE"], pz_item["NM_CODIGO"], pz_item["TX_ESTACAO"], 
+                    pz_item["TX_ENDERECO"], pz_item["DT_COLETA"], pz_item["NM_M15"], 
+                    pz_item["NM_H01"], pz_item["NM_H02"], pz_item["NM_H03"], 
+                    pz_item["NM_H04"], pz_item["NM_H24"], pz_item["NM_H96"], pz_item["NM_MES"]
+                )
+                cursor.insertRow(row_to_insert)
+    log.info("Camada de chuva atual (Nowcast) foi populada.")
+
+
+def doAnalysis(dataType="N"):
+    """
+    Executa a análise de geoprocessamento para determinar as áreas de perigo.
+    """
+    log.info("Iniciando análise de geoprocessamento.")
+    lyr_chuva_para_analise = LYR_OUT_LHASA_NOW if dataType == "N" else LYR_OUT_LHASA_HISTORICAL
+    
+    log.info("Passo 1: Selecionando áreas de risco (suscetibilidade média e alta).")
+    arcpy.analysis.Select(LYR_IN_SZ, LYR_PRC_A_AREAS_DE_RISCO, "gridcode IN (2,3)")
+    
+    log.info("Passo 2: Relacionando volume de chuva com área de risco (Intersect).")
+    arcpy.analysis.Intersect([lyr_chuva_para_analise, LYR_PRC_A_AREAS_DE_RISCO], LYR_PRC_B_VOLUME_VS_RISCO, "ALL")
+    
+    log.info("Passo 3: Criando e calculando campo de perigo.")
+    arcpy.management.AddField(LYR_PRC_B_VOLUME_VS_RISCO, FLD_RISCO, "TEXT", field_length=20)
+    
+    # Este bloco de código define os limiares de perigo.
+    # Pode ser necessário ajustar os valores de chuva (ex: !NM_H01!)
+    code_block = """def NivelPerigo(susceptibilidade, h01, h24, h96):
+        if((h01 >= 50 and h01 < 70) or (h24 >= 140 and h24 < 185) or ((h96 >= 185 and h96 < 255) and (h24 >= 55 and h24 < 100))):
+            if(susceptibilidade == 2): return "MODERADO"
+            elif(susceptibilidade == 3): return "ALTO"
+        elif((h01 >= 70) or (h24 >= 185) or (h96 >= 255 and h24 >= 100)): 
+            if(susceptibilidade == 2): return "MUITO ALTO"
+            elif(susceptibilidade == 3): return "CRITICO"
+        else:
+            return "BAIXO"
+    """
+    
+    arcpy.management.CalculateField(LYR_PRC_B_VOLUME_VS_RISCO, FLD_RISCO, "NivelPerigo(!gridcode!, !NM_H01!, !NM_H24!, !NM_H96!)", "PYTHON3", code_block)
+    
+    log.info("Passo 4: Agregando feições semelhantes (Dissolve).")
+    # Define o nome da camada de saída final
+    output_layer = os.path.join(GDB_WKSP_OUT, f"MG_LHASA_{dataType}_{datetime.now().strftime('%Y%m%d_%H%M')}")
+    arcpy.management.Dissolve(LYR_PRC_B_VOLUME_VS_RISCO, output_layer, "NM_CODIGO;TX_ESTACAO;DT_COLETA;PERIGO", "NM_H01 MAX", "MULTI_PART")
+    
+    if OUTPUT_TO_SDE:
+        log.info("Passo 5: Gravando resultado no SDE.")
+        arcpy.management.DeleteFeatures(SDE_WKSP_OUT)
+        arcpy.management.Append(output_layer, SDE_WKSP_OUT, "NO_TEST")
+    
+    log.info("Análise de geoprocessamento finalizada.")
+
+
+def nowcast():
+    """
+    Função principal que orquestra todo o fluxo de trabalho do Nowcast.
+    """
+    log.info("---- INICIANDO PROCESSO COMPLETO DE NOWCAST ----")
+    loadNowData()
+    doAnalysis("N")
+    log.info("---- PROCESSO DE NOWCAST FINALIZADO ----")
+
+# =======================================================================
+# BLOCO 6: EXECUÇÃO DO PROCESSO
+# =======================================================================
+
+try:
+    log.info("================================================")
+    log.info("INICIANDO SCRIPT DE ANÁLISE DE RISCO HIDROLÓGICO")
+    
+    # 1. Configura o ambiente ArcPy, workspaces, etc.
+    initialize()
+    
+    # 2. Executa o fluxo de trabalho completo do Nowcast.
+    # Esta função irá chamar as outras para:
+    # - Carregar os dados das camadas GIS
+    # - Buscar os dados de chuva da API INMET
+    # - Combinar as informações
+    # - Realizar a análise de geoprocessamento
+    nowcast()
+    
+    log.info("SCRIPT FINALIZADO COM SUCESSO.")
+    log.info("================================================")
+    print("Processo concluído com sucesso. Verifique a camada de saída.")
+
+except Exception as e:
+    # Em caso de qualquer erro não previsto, ele será registrado aqui
+    log.error("Ocorreu um erro crítico durante a execução do script principal.")
+    log.error(e, exc_info=True) # exc_info=True grava o traceback completo no log
+    print(f"ERRO: Ocorreu uma falha inesperada. Verifique o arquivo de log para mais detalhes: {LOG_FILE}")

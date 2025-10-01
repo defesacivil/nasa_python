@@ -493,3 +493,5 @@ if __name__ == "__main__":
     print("2. Consulte o guia de solução de problemas")
     print("3. Use o sistema de logging para identificar erros específicos")
 
+
+
